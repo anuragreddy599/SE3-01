@@ -233,6 +233,18 @@ public class MainMenu
         			}
         		});      
                 
+                JMenu mnHelp = new JMenu("Help");     
+                menuBar.add(mnHelp);
+           
+                mnHelp.addActionListener(new ActionListener() {
+        			public void actionPerformed(ActionEvent arg0) 
+        			{
+        				frame.setVisible(false);
+        				/*user x=new user();
+        				x.main(null);*/
+        			}
+        		});
+                
                 
          JMenuItem logoutItem = new JMenuItem("Log out");
 		logoutItem.addActionListener(new ActionListener() {
@@ -244,6 +256,8 @@ public class MainMenu
 			}
 		});
                 menuBar.add(logoutItem);
+                
+               
                 
                /* //Initialize all data
                 if(!importFile.isImported)
