@@ -24,12 +24,13 @@ import javax.swing.JPanel;
 
 
 
-import ui.ClientUI;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class mainpage
+
+public class MainMenu
 {
 	JLabel lblWelcome;
 	private JFrame frame;
@@ -45,13 +46,13 @@ public class mainpage
 		             }
 		         }
 		 } catch (ClassNotFoundException ex) {
-	            java.util.logging.Logger.getLogger(mainpage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+	            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 	        } catch (InstantiationException ex) {
-	            java.util.logging.Logger.getLogger(mainpage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+	            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 	        } catch (IllegalAccessException ex) {
-	            java.util.logging.Logger.getLogger(mainpage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+	            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 	        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-	            java.util.logging.Logger.getLogger(mainpage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+	            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 	        }
 		
 		EventQueue.invokeLater(new Runnable()
@@ -60,7 +61,7 @@ public class mainpage
 			{
 				try
 				{
-					mainpage window = new mainpage();
+					MainMenu window = new MainMenu();
 					window.frame.setTitle("Eagle Consulting Invoice Ltd. ");
 					window.frame.setSize(700,500);
 					window.frame.setVisible(true);
@@ -72,7 +73,7 @@ public class mainpage
 			}
 		});
 	}
-	public mainpage()
+	public MainMenu()
 	{
 		initialize();
 	}
@@ -114,8 +115,8 @@ public class mainpage
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				ClientUI x=new ClientUI(new javax.swing.JFrame(), true);
-				x.main(null);
+				//ClientUI x=new ClientUI(new javax.swing.JFrame(), true);
+				//x.main(null);
 			}
 		});
 		mnSecurity.add(mntmXyz);
@@ -238,8 +239,8 @@ public class mainpage
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				/*MainClassExecute x=new MainClassExecute();
-				x.main(null);*/
+				Login x=new Login();
+				x.main(null);
 			}
 		});
                 menuBar.add(logoutItem);
