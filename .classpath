@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/com.mysql.jdbc_5.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/eclipselink-2.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-jpa-2.1-api-1.0.0.final.jar"/>
+	<classpathentry kind="lib" path="lib/jgoodies-forms.jar"/>
+	<classpathentry kind="lib" path="lib/apache-commons-lang.jar"/>
+	<classpathentry kind="lib" path="lib/opencsv-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/org-apache-commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/org.apache.solr.common.jar"/>
+	<classpathentry kind="lib" path="lib/swingx-1.6.1.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
