@@ -1,5 +1,6 @@
 package main;
 
+import handler.CompanyHandler;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -22,12 +23,11 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 
-
-
-
-
 import java.util.ArrayList;
 import java.util.List;
+
+import ui.ClientUI;
+import ui.CompanyUI;
 
 
 public class MainMenu
@@ -79,24 +79,27 @@ public class MainMenu
 	}
 	private void initialize()
 	{
+                String companyName=getCompanyName();
+                companyName="<html> &nbsp; &nbsp; Welcome To <br/> "+companyName +"</html>";
 		frame = new JFrame();
 		//	univname = null;
-		
-	/*	lblWelcome.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		lblWelcome.setForeground(SystemColor.activeCaption);*/
+		lblWelcome = new JLabel(companyName, SwingConstants.CENTER);
+		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcome.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		lblWelcome.setForeground(SystemColor.activeCaption);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 				groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 						.addGap(30)
-						//.addComponent(lblWelcome, GroupLayout.PREFERRED_SIZE, 658, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblWelcome, GroupLayout.PREFERRED_SIZE, 658, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(27, Short.MAX_VALUE))
 				);
 		groupLayout.setVerticalGroup(
 				groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 						.addGap(39)
-						//.addComponent(lblWelcome, GroupLayout.PREFERRED_SIZE, 276, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblWelcome, GroupLayout.PREFERRED_SIZE, 276, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(101, Short.MAX_VALUE))
 				);
 		frame.getContentPane().setLayout(groupLayout);
@@ -115,8 +118,8 @@ public class MainMenu
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				//ClientUI x=new ClientUI(new javax.swing.JFrame(), true);
-				//x.main(null);
+				ClientUI x=new ClientUI(new javax.swing.JFrame(), true);
+				x.main(null);
 			}
 		});
 		mnSecurity.add(mntmXyz);
@@ -127,8 +130,8 @@ public class MainMenu
 			{
                                 
 				frame.setVisible(false);
-				/*course x=new course(new javax.swing.JFrame(), true);
-				x.main(null);*/
+                                // EmployeeUI x=new EmployeeUI(new javax.swing.JFrame(), true);
+				//x.main(null);
 			}
 		});
 		mnSecurity.add(mntmCourse);
@@ -138,19 +141,19 @@ public class MainMenu
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				/*degreeplan x=new degreeplan(new javax.swing.JFrame(), true);
-				x.main(null);*/
+                                 //ClientProjectUI x=new ClientProjectUI(new javax.swing.JFrame(), true);
+				//x.main(null);
 			}
 		});
 		mnSecurity.add(mntmDegreePlan);
                 
-                JMenuItem mntmForecast = new JMenuItem("Project");
+                JMenuItem mntmForecast = new JMenuItem(" Assign Project");
 		mntmForecast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				/*degreeplan x=new degreeplan(new javax.swing.JFrame(), true);
-				x.main(null);*/
+				//AssignProjectUI x=new AssignProjectUI(new javax.swing.JFrame(), true);
+				//x.main(null);
 			}
 		});
 		mnSecurity.add(mntmForecast);
@@ -161,8 +164,8 @@ public class MainMenu
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				/*degreeplanReq x=new degreeplanReq(new javax.swing.JFrame(), true);
-				x.main(null);*/
+				CompanyUI x=new CompanyUI(new javax.swing.JFrame(), true);
+				x.main(null);
 			}
 		});
 		mnSecurity.add(mntmDegreePlanReq);
@@ -233,18 +236,6 @@ public class MainMenu
         			}
         		});      
                 
-                JMenu mnHelp = new JMenu("Help");     
-                menuBar.add(mnHelp);
-           
-                mnHelp.addActionListener(new ActionListener() {
-        			public void actionPerformed(ActionEvent arg0) 
-        			{
-        				frame.setVisible(false);
-        				/*user x=new user();
-        				x.main(null);*/
-        			}
-        		});
-                
                 
          JMenuItem logoutItem = new JMenuItem("Log out");
 		logoutItem.addActionListener(new ActionListener() {
@@ -257,10 +248,12 @@ public class MainMenu
 		});
                 menuBar.add(logoutItem);
                 
-               
-                
                /* //Initialize all data
                 if(!importFile.isImported)
                     importFile.importAllFiles();*/
 	}
+
+    private String getCompanyName() {
+        return CompanyHandler.getInstance().getCompany().getName();
+    }
 }

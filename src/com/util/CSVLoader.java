@@ -12,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.solr.common.util.DateUtil;
 
 import au.com.bytecode.opencsv.CSVReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CSVLoader {
 
@@ -20,6 +22,8 @@ public class CSVLoader {
 	private static final String TABLE_REGEX = "\\$\\{table\\}";
 	private static final String KEYS_REGEX = "\\$\\{keys\\}";
 	private static final String VALUES_REGEX = "\\$\\{values\\}";
+        private static Pattern dateFrmtPtrn =
+            Pattern.compile("(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])/((19|20)\\d\\d)");
 
 	private Connection connection;
 	private char seprator;
@@ -104,12 +108,21 @@ public class CSVLoader {
 				if (null != nextLine) {
 					int index = 1;
 					for (String string : nextLine) {
+                                           
+                                            Matcher mtch =dateFrmtPtrn.matcher(string);
+                                            if (mtch.matches()){
+                                                date = convertToDate(string);
+                                                ps.setDate(index++, new java.sql.Date(date
+									.getTime()));
+                                            }else{
+                                                ps.setString(index++, string);
+                                            }
 						/*date = convertToDate(string);
 						if (null != date) {
 							ps.setDate(index++, new java.sql.Date(date
 									.getTime()));
 						} else {*/
-							ps.setString(index++, string);
+							//ps.setString(index++, string);
 						//}
 					}
 					ps.addBatch();
@@ -149,7 +162,7 @@ public class CSVLoader {
             return null;
         }
         SimpleDateFormat parse_to_format = new SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss'Z'");
+                "mm/dd/yyyy");
 
         java.util.Date parsedate = null;
         try {
