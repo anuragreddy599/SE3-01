@@ -5,8 +5,9 @@
     <class>com.entity.Employee</class>
     <class>com.entity.Client</class>
     <class>com.entity.Company</class>
-    <class>com.entity.Project</class>
     <class>com.entity.User</class>
+    <class>com.entity.ProjectPerson</class>
+    <class>com.entity.ClientProject</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/invoice"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
