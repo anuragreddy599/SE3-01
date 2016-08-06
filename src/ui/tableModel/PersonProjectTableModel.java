@@ -14,7 +14,7 @@ public class PersonProjectTableModel extends AbstractTableModel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<PersonProjectTO> li = new ArrayList<PersonProjectTO>();
-    private String[] columnNames = { "Number", "Name"};
+    private String[] columnNames = { "Project Number", "Project Name"};
 
     
     public PersonProjectTableModel(List<PersonProjectTO> list){
