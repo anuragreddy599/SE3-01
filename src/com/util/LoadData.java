@@ -25,11 +25,12 @@ public class LoadData {
 
 			CSVLoader loader = new CSVLoader(getCon());
 			
-			loader.loadCSV("C://Users//anura//Desktop//Project2//Sample Data//client_data.csv", "CLIENT", true);
-			loader.loadCSV("C://Users//anura//Desktop//Project2//Sample Data//company_data.csv", "COMPANY", true);
-			loader.loadCSV("C://Users//anura//Desktop//Project2//Sample Data//people_data.csv", "EMPLOYEE", true);
-			loader.loadCSV("C://Users//anura//Desktop//Project2//Sample Data//project_data.csv", "PROJECT", true);
-			//loader.loadCSV("C://Users//anura//Desktop//Project2//Sample Data//project_person.csv", "CUSTOMER", true);
+			loader.loadCSV("G://Documents//Anurag//Project2//Sample Data//client_data.csv", "CLIENT", true);
+			loader.loadCSV("G://Documents//Anurag//Project2//Sample Data//company_data.csv", "COMPANY", true);
+			loader.loadCSV("G://Documents//Anurag//Project2//Sample Data//people_data.csv", "EMPLOYEE", true);
+			loader.loadCSV("G://Documents//Anurag//Project2//Sample Data//project_data.csv", "CLIENTPROJECT", true);
+                        loader.loadCSV("G://Documents//Anurag//Project2//Sample Data//project_person.csv", "PROJECTPERSON", true);
+			//loader.loadCSV("G://Documents//Anurag//Project2//Sample Data//project_person.csv", "CUSTOMER", true);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -40,7 +41,7 @@ public class LoadData {
 		Connection connection = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection(JDBC_CONNECTION_URL,"root","Darling5");
+			connection = DriverManager.getConnection(JDBC_CONNECTION_URL,"root","root");
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import pojo.UserTO;
-
+import service.ClientService;
 
 /**
  *
@@ -143,6 +143,7 @@ public class Login extends javax.swing.JFrame {
                         if(userObjNew!=null && userObjNew.getPassword().equals(userObj.getPassword())){
                             isAuth=true;
                             LoginHandler.setUser(userObjNew);
+                            System.out.println("Log in : "+userObjNew.getUserId());
                         }
                     
                     }catch(Exception e){

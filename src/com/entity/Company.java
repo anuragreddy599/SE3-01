@@ -13,7 +13,7 @@ public class Company {
 	
 	 @Id
 	   @GeneratedValue(strategy = GenerationType.AUTO) 
-	//private int id;
+        private int id;
 	 private String name;
 	 private String addressLine1;
 	 private String addressLine2;
@@ -22,16 +22,16 @@ public class Company {
 	 private String zip;
 	/**
 	 * @return the id
-	 *//*
+	 */
 	public int getId() {
 		return id;
 	}
-	*//**
+	/**
 	 * @param id the id to set
-	 *//*
+	 */
 	public void setId(int id) {
 		this.id = id;
-	}*/
+	}
 	/**
 	 * @return the name
 	 */

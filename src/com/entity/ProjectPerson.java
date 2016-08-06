@@ -1,5 +1,6 @@
 package com.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,11 +10,21 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class Project {
+public class ProjectPerson {
 
 	@Id
 	   @GeneratedValue(strategy = GenerationType.AUTO) 	
+        private int id;
+        @Column(name="PROJECTNUMBER")
 	private int number;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 	 /**
 	 * @return the number
 	 */
@@ -38,5 +49,6 @@ public class Project {
 	public void setName(String name) {
 		this.name = name;
 	}
+        @Column(name="PROJECTNAME")
 	private String name;
 }
