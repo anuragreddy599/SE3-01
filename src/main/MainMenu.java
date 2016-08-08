@@ -23,11 +23,15 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 
+
+
+import ui.ClientUI_back;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ui.ClientUI;
-import ui.CompanyUI;
+import ui.EmployeeUI;
 
 
 public class MainMenu
@@ -130,8 +134,8 @@ public class MainMenu
 			{
                                 
 				frame.setVisible(false);
-                                // EmployeeUI x=new EmployeeUI(new javax.swing.JFrame(), true);
-				//x.main(null);
+                                 EmployeeUI x=new EmployeeUI(new javax.swing.JFrame(), true);
+				x.main(null);
 			}
 		});
 		mnSecurity.add(mntmCourse);
@@ -164,8 +168,8 @@ public class MainMenu
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				CompanyUI x=new CompanyUI(new javax.swing.JFrame(), true);
-				x.main(null);
+				//CompanyUI x=new CompanyUI(new javax.swing.JFrame(), true);
+				//x.main(null);
 			}
 		});
 		mnSecurity.add(mntmDegreePlanReq);
@@ -200,6 +204,27 @@ public class MainMenu
 			}
 		});
          //mnSystem.add(mntmUser);
+         JMenuItem mntmFillTimesheet = new JMenuItem("Fill Timesheets");
+		mntmFillTimesheet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				frame.setVisible(false);
+				//TimesheetsUI x=new TimesheetsUI(new javax.swing.JFrame(), true);
+				//x.main(null);
+			}
+		});
+		mnTimesheets.add(mntmFillTimesheet);
+                
+           JMenuItem mntmApproveTimesheet = new JMenuItem("Approve Timesheets");
+		mntmApproveTimesheet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				frame.setVisible(false);
+				/*generateschedule x=new generateschedule();
+				x.main(null);*/
+			}
+		});
+		mnTimesheets.add(mntmApproveTimesheet);     
       
         JMenu mnReport = new JMenu("Generate Report");
                

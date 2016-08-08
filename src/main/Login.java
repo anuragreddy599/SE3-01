@@ -143,6 +143,7 @@ public class Login extends javax.swing.JFrame {
                         if(userObjNew!=null && userObjNew.getPassword().equals(userObj.getPassword())){
                             isAuth=true;
                             LoginHandler.setUser(userObjNew);
+                            System.out.println("Log in : "+userObjNew.getUserId());
                         }
                     
                     }catch(Exception e){
