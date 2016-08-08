@@ -5,7 +5,7 @@
  */
 package ui;
 
-
+import handler.ClientProjectHandler;
 import handler.CompanyHandler;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

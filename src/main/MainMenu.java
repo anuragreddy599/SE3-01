@@ -1,6 +1,7 @@
 package main;
 
 import handler.CompanyHandler;
+
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -23,11 +24,17 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 
+
+
+import ui.ClientUI_back;
+
 import java.util.ArrayList;
 import java.util.List;
-
+import ui.AssignProjectUI;
+import ui.ClientProjectUI;
 import ui.ClientUI;
 import ui.CompanyUI;
+import ui.EmployeeUI;
 
 
 public class MainMenu
@@ -130,8 +137,8 @@ public class MainMenu
 			{
                                 
 				frame.setVisible(false);
-                                // EmployeeUI x=new EmployeeUI(new javax.swing.JFrame(), true);
-				//x.main(null);
+                                 EmployeeUI x=new EmployeeUI(new javax.swing.JFrame(), true);
+				x.main(null);
 			}
 		});
 		mnSecurity.add(mntmCourse);
@@ -141,8 +148,8 @@ public class MainMenu
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-                                 //ClientProjectUI x=new ClientProjectUI(new javax.swing.JFrame(), true);
-				//x.main(null);
+                                 ClientProjectUI x=new ClientProjectUI(new javax.swing.JFrame(), true);
+				x.main(null);
 			}
 		});
 		mnSecurity.add(mntmDegreePlan);
@@ -152,8 +159,8 @@ public class MainMenu
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				//AssignProjectUI x=new AssignProjectUI(new javax.swing.JFrame(), true);
-				//x.main(null);
+				AssignProjectUI x=new AssignProjectUI(new javax.swing.JFrame(), true);
+				x.main(null);
 			}
 		});
 		mnSecurity.add(mntmForecast);
@@ -180,8 +187,8 @@ public class MainMenu
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				/*generateschedule x=new generateschedule();
-				x.main(null);*/
+				//InvoiceGenerateHandler.getInstance().generateInvoice();
+				//x.main(null);
 			}
 		});
 		mnSchedule.add(mntmGenerateSchedule);
@@ -200,6 +207,27 @@ public class MainMenu
 			}
 		});
          //mnSystem.add(mntmUser);
+         JMenuItem mntmFillTimesheet = new JMenuItem("Fill Timesheets");
+		mntmFillTimesheet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				frame.setVisible(false);
+				//TimesheetsUI x=new TimesheetsUI(new javax.swing.JFrame(), true);
+				//x.main(null);
+			}
+		});
+		mnTimesheets.add(mntmFillTimesheet);
+                
+           JMenuItem mntmApproveTimesheet = new JMenuItem("Approve Timesheets");
+		mntmApproveTimesheet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				frame.setVisible(false);
+				//TimesheetsApproveUI x=new TimesheetsApproveUI(new javax.swing.JFrame(), true);
+				//x.main(null);
+			}
+		});
+		mnTimesheets.add(mntmApproveTimesheet);     
       
         JMenu mnReport = new JMenu("Generate Report");
                
@@ -231,8 +259,8 @@ public class MainMenu
         			public void actionPerformed(ActionEvent arg0) 
         			{
         				frame.setVisible(false);
-        				/*user x=new user();
-        				x.main(null);*/
+        				//UserUI x=new UserUI(new javax.swing.JFrame(), true);
+        				//x.main(null);
         			}
         		});      
                 

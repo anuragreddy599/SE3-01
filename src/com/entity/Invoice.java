@@ -1,12 +1,17 @@
 package com.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table
 public class Invoice {
 
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO) 	
 	private String invoiceNo;
 	private String invoiceDate;
 	private String projectNumber;
