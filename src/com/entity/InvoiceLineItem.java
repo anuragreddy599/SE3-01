@@ -1,30 +1,43 @@
 package com.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table
 public class InvoiceLineItem {
 
-	private String invoiceNo;
+    @ManyToOne
+    private Invoice invoice;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+	private String invoiceLineItemNo;
 	private String date;
 	private String description;
 	private String rate;
 	private String hours;
 	private String amount;
-	/**
-	 * @return the invoiceNo
-	 */
-	public String getInvoiceNo() {
-		return invoiceNo;
-	}
-	/**
-	 * @param invoiceNo the invoiceNo to set
-	 */
-	public void setInvoiceNo(String invoiceNo) {
-		this.invoiceNo = invoiceNo;
-	}
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
+
+    public String getInvoiceLineItemNo() {
+        return invoiceLineItemNo;
+    }
+
+    public void setInvoiceLineItemNo(String invoiceLineItemNo) {
+        this.invoiceLineItemNo = invoiceLineItemNo;
+    }
+	
 	/**
 	 * @return the date
 	 */

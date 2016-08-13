@@ -1,15 +1,21 @@
 package com.entity;
 
+import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table
 public class Invoice {
 
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO) 	
 	private String invoiceNo;
-	private String invoiceDate;
-	private String projectNumber;
+	private Date invoiceDate;
+	private Long projectNumber;
 	private String totalAmountDue;
 	/**
 	 * @return the invoiceNo
@@ -23,30 +29,24 @@ public class Invoice {
 	public void setInvoiceNo(String invoiceNo) {
 		this.invoiceNo = invoiceNo;
 	}
-	/**
-	 * @return the invoiceDate
-	 */
-	public String getInvoiceDate() {
-		return invoiceDate;
-	}
-	/**
-	 * @param invoiceDate the invoiceDate to set
-	 */
-	public void setInvoiceDate(String invoiceDate) {
-		this.invoiceDate = invoiceDate;
-	}
-	/**
-	 * @return the projectNumber
-	 */
-	public String getProjectNumber() {
-		return projectNumber;
-	}
-	/**
-	 * @param projectNumber the projectNumber to set
-	 */
-	public void setProjectNumber(String projectNumber) {
-		this.projectNumber = projectNumber;
-	}
+
+    public Date getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
+
+    public Long getProjectNumber() {
+        return projectNumber;
+    }
+
+    public void setProjectNumber(Long projectNumber) {
+        this.projectNumber = projectNumber;
+    }
+	
+	
 	/**
 	 * @return the totalAmountDue
 	 */
