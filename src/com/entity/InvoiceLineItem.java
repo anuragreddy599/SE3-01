@@ -1,30 +1,81 @@
 package com.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table
 public class InvoiceLineItem {
 
-	private String invoiceNo;
+//    @ManyToOne
+//    private Invoice invoice;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+	private int invoiceLineItemNo;
 	private String date;
 	private String description;
-	private String rate;
-	private String hours;
-	private String amount;
-	/**
-	 * @return the invoiceNo
-	 */
-	public String getInvoiceNo() {
-		return invoiceNo;
-	}
-	/**
-	 * @param invoiceNo the invoiceNo to set
-	 */
-	public void setInvoiceNo(String invoiceNo) {
-		this.invoiceNo = invoiceNo;
-	}
+	private int rate;
+	private int hours;
+	private int amount;
+        private int invoiceNo;
+
+    public int getInvoiceNo() {
+        return invoiceNo;
+    }
+
+    public void setInvoiceNo(int invoiceNo) {
+        this.invoiceNo = invoiceNo;
+    }
+
+        
+    public int getInvoiceLineItemNo() {
+        return invoiceLineItemNo;
+    }
+
+    public void setInvoiceLineItemNo(int invoiceLineItemNo) {
+        this.invoiceLineItemNo = invoiceLineItemNo;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+        
+        
+
+//    public Invoice getInvoice() {
+//        return invoice;
+//    }
+//
+//    public void setInvoice(Invoice invoice) {
+//        this.invoice = invoice;
+//    }
+
+   
+	
 	/**
 	 * @return the date
 	 */
@@ -49,40 +100,5 @@ public class InvoiceLineItem {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	/**
-	 * @return the rate
-	 */
-	public String getRate() {
-		return rate;
-	}
-	/**
-	 * @param rate the rate to set
-	 */
-	public void setRate(String rate) {
-		this.rate = rate;
-	}
-	/**
-	 * @return the hours
-	 */
-	public String getHours() {
-		return hours;
-	}
-	/**
-	 * @param hours the hours to set
-	 */
-	public void setHours(String hours) {
-		this.hours = hours;
-	}
-	/**
-	 * @return the amount
-	 */
-	public String getAmount() {
-		return amount;
-	}
-	/**
-	 * @param amount the amount to set
-	 */
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
+	
 }
