@@ -1,7 +1,7 @@
 package main;
 
 import handler.CompanyHandler;
-//import handler.InvoiceGenerateHandler;
+import handler.InvoiceGenerateHandler;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -189,7 +189,7 @@ public class MainMenu
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
-				//InvoiceGenerateHandler.getInstance().generateInvoice();
+				InvoiceGenerateHandler.getInstance().generateInvoice();
 				//x.main(null);
 			}
 		});

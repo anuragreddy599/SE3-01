@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 @Entity
 @Table
@@ -13,22 +14,21 @@ public class Invoice {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO) 	
-	private String invoiceNo;
+	private int invoiceNo;
+        @Temporal(javax.persistence.TemporalType.DATE)
 	private Date invoiceDate;
 	private Long projectNumber;
 	private String totalAmountDue;
-	/**
-	 * @return the invoiceNo
-	 */
-	public String getInvoiceNo() {
-		return invoiceNo;
-	}
-	/**
-	 * @param invoiceNo the invoiceNo to set
-	 */
-	public void setInvoiceNo(String invoiceNo) {
-		this.invoiceNo = invoiceNo;
-	}
+
+    public int getInvoiceNo() {
+        return invoiceNo;
+    }
+
+    public void setInvoiceNo(int invoiceNo) {
+        this.invoiceNo = invoiceNo;
+    }
+	
+        
 
     public Date getInvoiceDate() {
         return invoiceDate;

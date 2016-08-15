@@ -11,32 +11,70 @@ import javax.persistence.Table;
 @Table
 public class InvoiceLineItem {
 
-    @ManyToOne
-    private Invoice invoice;
+//    @ManyToOne
+//    private Invoice invoice;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) 
-	private String invoiceLineItemNo;
+	private int invoiceLineItemNo;
 	private String date;
 	private String description;
-	private String rate;
-	private String hours;
-	private String amount;
+	private int rate;
+	private int hours;
+	private int amount;
+        private int invoiceNo;
 
-    public Invoice getInvoice() {
-        return invoice;
+    public int getInvoiceNo() {
+        return invoiceNo;
     }
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
+    public void setInvoiceNo(int invoiceNo) {
+        this.invoiceNo = invoiceNo;
     }
 
-    public String getInvoiceLineItemNo() {
+        
+    public int getInvoiceLineItemNo() {
         return invoiceLineItemNo;
     }
 
-    public void setInvoiceLineItemNo(String invoiceLineItemNo) {
+    public void setInvoiceLineItemNo(int invoiceLineItemNo) {
         this.invoiceLineItemNo = invoiceLineItemNo;
     }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+        
+        
+
+//    public Invoice getInvoice() {
+//        return invoice;
+//    }
+//
+//    public void setInvoice(Invoice invoice) {
+//        this.invoice = invoice;
+//    }
+
+   
 	
 	/**
 	 * @return the date
@@ -62,40 +100,5 @@ public class InvoiceLineItem {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	/**
-	 * @return the rate
-	 */
-	public String getRate() {
-		return rate;
-	}
-	/**
-	 * @param rate the rate to set
-	 */
-	public void setRate(String rate) {
-		this.rate = rate;
-	}
-	/**
-	 * @return the hours
-	 */
-	public String getHours() {
-		return hours;
-	}
-	/**
-	 * @param hours the hours to set
-	 */
-	public void setHours(String hours) {
-		this.hours = hours;
-	}
-	/**
-	 * @return the amount
-	 */
-	public String getAmount() {
-		return amount;
-	}
-	/**
-	 * @param amount the amount to set
-	 */
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
+	
 }
