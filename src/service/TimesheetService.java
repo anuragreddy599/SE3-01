@@ -19,6 +19,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import pojo.ClientTO;
@@ -236,8 +237,12 @@ public class TimesheetService {
         CriteriaBuilder cb=entitymanager.getCriteriaBuilder();
                 CriteriaQuery<Timesheets> cq=cb.createQuery(Timesheets.class);
                 Root<Timesheets> root = cq.from(Timesheets.class);
-                cq.where(cb.equal(root.get("project"),projectNumber));
-              
+                Predicate andClause =  cb.and(cb.equal(root.get("approved"),true));     
+                cq.where(cb.equal(root.get("project"),projectNumber),andClause );
+                        
+                  
+                //cq.where(cb.equal(root.get("approved"),true));
+               
                TypedQuery<Timesheets> query = entitymanager.createQuery(cq);
 
                 List<Timesheets> timesheetList= query.getResultList();

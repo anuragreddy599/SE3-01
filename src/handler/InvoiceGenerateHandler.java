@@ -2,8 +2,10 @@ package handler;
 
 import com.entity.Invoice;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,7 +19,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javafx.collections.transformation.SortedList;
+//import javafx.collections.transformation.SortedList;
+import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -189,7 +193,16 @@ public class InvoiceGenerateHandler {
                        }
                     }
                 }
-               
+                if(invoiceFreq.equals("Monthly-Cal")){
+                    Date currentDate=new Date();
+                    if(null!=lastInvoiceDate){
+                        long msDiff=currentDate.getTime()-lastInvoiceDate.getTime();
+                       long daysDiff = Math.round(msDiff / ((double)MILLIS_PER_DAY)); 
+                       if( daysDiff<30){
+                           iter.remove();
+                       }
+                    }
+                }
             }
                 return invoiceMap;
     }
@@ -270,23 +283,31 @@ public class InvoiceGenerateHandler {
           int invoiceNo=InvoiceService.getInstance().addInvoice(invoiceTO);
           invoiceTO.setInvoiceNo(String.valueOf(invoiceNo));
           //Generate PDF
-          generateJasperPDF(invoiceTO);
+          DataSource attachement=generateJasperPDF(invoiceTO);
         // Create Email
         //Attach the generated PDF 
+        Map<String,Object> mailData=new HashMap<String,Object>();
+        mailData.put("attachment", attachement);
+        mailData.put("project",invoiceTO.getProjectNumber());
+        ClientTO clientObj=ClientService.getInstance().findClient(invoiceTO.getClient());
+        mailData.put("clientEmail",clientObj.getEmail());
         //Send email to client with registered email
-        //JavaMailService.getInstance().sendMail(null);
+        if(attachement!=null)
+            JavaMailService.getInstance().sendMail(mailData);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    private void generateJasperPDF(InvoiceTO invoiceTO) {
+    private DataSource generateJasperPDF(InvoiceTO invoiceTO) {
         JasperPrint jasperPrint = null;
+        DataSource aAttachment=null;
         try{
 		
-       
-        JasperReport jasperReport = JasperCompileManager.compileReport("G:\\Documents\\Anurag\\Project2\\workspace_eclipse\\generateInvoice.jrxml");
-		Collection<Map<String, ?>> list = new ArrayList<Map<String,?>>();
+            InputStream is=this.getClass().getResourceAsStream("/report/generateInvoice.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(is);
+        is.close();
+        Collection<Map<String, ?>> list = new ArrayList<Map<String,?>>();
        
        Map mapDs= new HashMap();
        mapDs.put("clientId", invoiceTO.getClient());
@@ -317,6 +338,7 @@ public class InvoiceGenerateHandler {
         String sDate= sdf.format(date);
        mapDs.put("invoiceDate",sDate);
        mapDs.put("totalAmountDue",invoiceTO.getTotalAmountDue());
+       mapDs.put("Logo","logo");
        
        List<Map<String,?>> listLine= new ArrayList<Map<String,?>>();
        List<LineItemTO> lineItemList=invoiceTO.getListLineItem();
@@ -338,16 +360,28 @@ public class InvoiceGenerateHandler {
         //JRMapCollectionDataSource mapColDataSource = new JRMapCollectionDataSource(col);
         Map parameters = new HashMap();
         parameters.put("INFO", "Hello");
+        String imagePath =this.getClass().getResource("/image/logo1.png").toString();
+        parameters.put("imagePath",imagePath);
         parameters.put("lineItemList", new JRMapCollectionDataSource(listLine));
         //parameters.put("lineItemList", listLine);
 
        jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRMapCollectionDataSource(list));
        System.out.println("Printing.......");
-       String outputFile="G:/Documents/Anurag/Project2/workspace_eclipse/generateInvoice_"+invoiceTO.getProjectNumber()+".pdf";
-       /* outputStream to create PDF */
-            OutputStream outputStream = new FileOutputStream(new File(outputFile));
-            /* Write content to PDF file */
-            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+       
+//       /* START :Enable this to generate pdf file instead of send email*/
+//            String outputFile="G:/Documents/Anurag/Project2/workspace_eclipse/generateInvoice_"+invoiceTO.getProjectNumber()+".pdf";
+//            /* outputStream to create PDF */
+//            OutputStream outputStream = new FileOutputStream(new File(outputFile));
+//            /* Write content to PDF file */
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+//            outputStream.flush();
+//            outputStream.close();
+//            /* END :Enable this to generate pdf file instead of send email*/
+            
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, baos);// Commented to 
+             aAttachment =  new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
 
 //       ByteArrayOutputStream baos =new ByteArrayOutputStream();
 //       JasperExportManager.exportReportToPdfStream(jasperPrint,baos);
@@ -355,6 +389,7 @@ public class InvoiceGenerateHandler {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+        return aAttachment;
     }
     
     String formatDate(Date date){

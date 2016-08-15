@@ -188,7 +188,7 @@ public class MainMenu
 		mntmGenerateSchedule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				frame.setVisible(false);
+				//frame.setVisible(false);
 				InvoiceGenerateHandler.getInstance().generateInvoice();
 				//x.main(null);
 			}
