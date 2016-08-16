@@ -9,24 +9,29 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.entity.Client;
+import com.entity.Invoice;
+import com.entity.InvoiceLineItem;
+import java.util.Iterator;
 import javax.persistence.PersistenceException;
 
 import pojo.ClientTO;
+import pojo.InvoiceTO;
+import pojo.LineItemTO;
 
 
-public class ClientService {
+public class InvoiceService {
 
-	private static ClientService instance = null;
+	private static InvoiceService instance = null;
 	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Invoice_PU" );
     
         EntityManager entitymanager = emfactory.createEntityManager( );
 	
-	   private ClientService() {
+	   private InvoiceService() {
 	      // Exists only to defeat instantiation.
 	   }
-	   public static ClientService getInstance() {
+	   public static InvoiceService getInstance() {
 	      if(instance == null) {
-	         instance = new ClientService();
+	         instance = new InvoiceService();
 	      }
 	      return instance;
 	   }
@@ -88,31 +93,64 @@ public class ClientService {
       return true;  
     }
 
-    public void addClient(ClientTO clientObj) {
+    public int addInvoice(InvoiceTO invoiceToObj) {
+        int invoiceNo=0;
         try{
-        Client client=new Client();
-        client.setNumber(clientObj.getNumber());
-        client.setName(clientObj.getName());
-        client.setAddressLine1(clientObj.getAddressLine1());
-        client.setAddressLine2(clientObj.getAddressLine2());
-        client.setCity(clientObj.getCity());
-        client.setState(clientObj.getState());
-        client.setZip(clientObj.getZip());
-        client.setEmail(clientObj.getEmail());
-        client.setContact(clientObj.getContact());
-        client.setInvoiceFreq(clientObj.getInvoiceFreq());
-        client.setBillingTerm(clientObj.getBillingTerms());
-        client.setInvoiceGrouping(clientObj.getInvoiceGrouping());
-        client.setStatus(clientObj.getStatus());
+        Invoice invoice=new Invoice();
+        invoice.setInvoiceDate(invoiceToObj.getInvoiceDate());
+        
+        invoice.setProjectNumber(invoiceToObj.getProjectNumber());
+        invoice.setTotalAmountDue(invoiceToObj.getTotalAmountDue());
+        
          entitymanager.getTransaction( ).begin( );
-         entitymanager.persist( client );
+         entitymanager.persist( invoice );
+         invoiceNo=invoice.getInvoiceNo();
          entitymanager.getTransaction( ).commit( );
+         
+         List<LineItemTO> listLineItem=invoiceToObj.getListLineItem();
+            Iterator iter= listLineItem.iterator();
+            while(iter.hasNext()){
+                LineItemTO lineItemTO=(LineItemTO)iter.next();
+                InvoiceLineItem invoiceLineItem= new InvoiceLineItem();
+                invoiceLineItem.setAmount(lineItemTO.getAmount());
+                invoiceLineItem.setDate(lineItemTO.getDate());
+                invoiceLineItem.setDescription(lineItemTO.getDescription());
+                invoiceLineItem.setHours(lineItemTO.getHours());
+                invoiceLineItem.setRate(lineItemTO.getRate());
+                invoiceLineItem.setInvoiceNo(invoiceNo);
+                
+                entitymanager.getTransaction( ).begin( );
+                entitymanager.persist( invoiceLineItem );
+                entitymanager.getTransaction( ).commit( );
+            }
+         
         }catch(PersistenceException e){
             e.printStackTrace();
         }finally{
       //entitymanager.close( );
       //emfactory.close( );
         }
+        return invoiceNo;
     }
-
+    
+    public ClientTO findInvoice(Long number){
+        
+        //entitymanager.getTransaction( ).begin( ); 
+          Client client=  entitymanager.find(Client.class, (int) (long) number);
+          ClientTO obj= new ClientTO();
+			obj.setNumber(client.getNumber());
+			obj.setName(client.getName());
+			obj.setAddressLine1(client.getAddressLine1());
+			obj.setAddressLine2(client.getAddressLine2());
+			obj.setCity(client.getCity());
+			obj.setContact(client.getContact());
+			obj.setEmail(client.getEmail());
+			obj.setInvoiceFreq(client.getInvoiceFreq());
+			obj.setInvoiceGrouping(client.getInvoiceGrouping());
+                        obj.setBillingTerms(client.getBillingTerm());
+			obj.setState(client.getState());
+			obj.setStatus(client.getStatus());
+			obj.setZip(client.getZip());
+            return obj;            
+    }
 }

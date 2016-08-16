@@ -10,11 +10,9 @@ import javax.persistence.Query;
 
 import com.entity.Client;
 import com.entity.Employee;
-import javax.persistence.PersistenceException;
 
-import pojo.ClientTO;
-import pojo.EmployeeTO;
 
+ 
 
 public class EmployeeService {
 
@@ -92,5 +90,31 @@ public class EmployeeService {
       //entitymanager.close( );
       //emfactory.close( );
         }
+    }
+    
+    public EmployeeTO getEmplDetails(String name){
+        EmployeeTO obj=null;
+        try{
+                CriteriaBuilder cb=entitymanager.getCriteriaBuilder();
+                CriteriaQuery<Employee> cq=cb.createQuery(Employee.class);
+                Root<Employee> root = cq.from(Employee.class);
+                cq.where(cb.equal(root.get("name"),name));
+              
+               TypedQuery<Employee> query = entitymanager.createQuery(cq);
+
+                Employee employeeObj=(Employee) query.getSingleResult();
+		
+			obj= new EmployeeTO();
+			obj.setName(employeeObj.getName());
+			obj.setTitle(employeeObj.getTitle());
+			obj.setRole(employeeObj.getRole());
+			obj.setStatus(employeeObj.getStatus());
+			obj.setBillRate(employeeObj.getBillRate());
+                        
+            }catch(NoResultException e){
+                e.printStackTrace();
+            }
+        return obj;
+
     }
 }
