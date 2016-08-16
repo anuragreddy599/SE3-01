@@ -9,51 +9,62 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.entity.Client;
+import com.entity.Employee;
+import com.entity.ProjectPerson;
+import com.entity.User;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import pojo.ClientTO;
+import pojo.PersonProjectTO;
 
 
-public class ClientService {
+public class PersonProjectService {
 
-	private static ClientService instance = null;
+	private static PersonProjectService instance = null;
 	EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "Invoice_PU" );
     
         EntityManager entitymanager = emfactory.createEntityManager( );
 	
-	   private ClientService() {
+	   private PersonProjectService() {
 	      // Exists only to defeat instantiation.
 	   }
-	   public static ClientService getInstance() {
+	   public static PersonProjectService getInstance() {
 	      if(instance == null) {
-	         instance = new ClientService();
+	         instance = new PersonProjectService();
 	      }
 	      return instance;
 	   }
-	public List<ClientTO> getAllClients() {
+	public List<String> getAllProjects() {
 		
 		Query query = entitymanager.
-	      createQuery("Select e from Client e");
-		List<Client> listClient=query.getResultList();
+	      createQuery("Select e.projectNumber from ClientProject e");
+		List<String> listProject=query.getResultList();
                 
 		//Convert from entity to TO
-		List<ClientTO> listTo= new ArrayList<ClientTO>();
-		for(Client clientObj:listClient){
-			ClientTO obj= new ClientTO();
-			obj.setNumber(clientObj.getNumber());
-			obj.setName(clientObj.getName());
-			obj.setAddressLine1(clientObj.getAddressLine1());
-			obj.setAddressLine2(clientObj.getAddressLine2());
-			obj.setCity(clientObj.getCity());
-			obj.setContact(clientObj.getContact());
-			obj.setEmail(clientObj.getEmail());
-			obj.setInvoiceFreq(clientObj.getInvoiceFreq());
-			obj.setInvoiceGrouping(clientObj.getInvoiceGrouping());
-                        obj.setBillingTerms(clientObj.getBillingTerm());
-			obj.setState(clientObj.getState());
-			obj.setStatus(clientObj.getStatus());
-			obj.setZip(clientObj.getZip());
-			listTo.add(obj);
+		List<String> listTo= new ArrayList<String>();
+		
+		return listProject;
+	}
+        public List<String> getAllDevelopers() {
+		
+		CriteriaBuilder cb=entitymanager.getCriteriaBuilder();
+                CriteriaQuery<Employee> cq=cb.createQuery(Employee.class);
+                Root<Employee> root = cq.from(Employee.class);
+                cq.where(cb.equal(root.get("role"),"Developer"));
+              
+               TypedQuery<Employee> query = entitymanager.createQuery(cq);
+
+                List<Employee> employeeList= query.getResultList();
+	            
+		//Convert from entity to TO
+		List<String> listTo= new ArrayList<String>();
+		for(Employee empObj:employeeList){
+			
+			listTo.add(empObj.getName());
 		}
 		return listTo;
 	}
@@ -115,4 +126,35 @@ public class ClientService {
         }
     }
 
+    public List<PersonProjectTO> getAllAssignedData() {
+        Query query = entitymanager.
+	      createQuery("Select e from ProjectPerson e");
+		List<ProjectPerson> listProjectPerson=query.getResultList();
+                //Convert from entity to TO
+		List<PersonProjectTO> listTo= new ArrayList<PersonProjectTO>();
+                for(ProjectPerson projectPerson:listProjectPerson){
+                    PersonProjectTO personProjectTO= new PersonProjectTO();
+                    personProjectTO.setName(projectPerson.getName());
+                    personProjectTO.setNumber(projectPerson.getNumber());
+                   listTo.add(personProjectTO);
+                }
+	return listTo;	
+    }
+
+    public void addRecord(PersonProjectTO personObj) {
+        try{
+            ProjectPerson projectPerson=new ProjectPerson();
+            projectPerson.setNumber(personObj.getNumber());
+            projectPerson.setName(personObj.getName());
+            
+             entitymanager.getTransaction( ).begin( );
+             entitymanager.persist( projectPerson );
+             entitymanager.getTransaction( ).commit( );
+        }catch(PersistenceException e){
+            e.printStackTrace();
+        }finally{
+      //entitymanager.close( );
+      //emfactory.close( );
+        }
+    }
 }

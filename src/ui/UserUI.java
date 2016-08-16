@@ -1,0 +1,498 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ui;
+
+import handler.ClientHandler;
+import handler.UserHandler;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import main.MainMenu;
+import pojo.ClientTO;
+import pojo.UserTO;
+import ui.tableModel.ClientTableModel;
+import ui.tableModel.UserTableModel;
+
+/**
+ *
+ * @author Mantu
+ */
+public class UserUI extends javax.swing.JDialog {
+    
+    boolean addRecord = false;
+
+	private void clearInputBoxes() {
+		jTextField1.setText("");
+                jTextField1.setEnabled(true);
+                jTextField2.setText("");
+                jTextField4.setText("");
+                jComboBox1.setSelectedItem("Active");
+		jComboBox2.setSelectedItem("Admin");
+
+	}
+
+        private int addNew()  {
+            UserHandler userHandler= UserHandler.getInstance();
+            UserTO userObj=new UserTO();
+                //userObj.setId(Long.parseLong(jTextField1.getText()));
+                userObj.setUserId(jTextField1.getText());
+                userObj.setPassword(jTextField2.getText());
+                userObj.setRole(jComboBox2.getSelectedItem().toString());
+                userObj.setStatus(jComboBox1.getSelectedItem().toString());
+                
+		userHandler.addUser(userObj);
+		
+		return 1;
+	}
+
+	private boolean updateRecord() {
+		UserHandler userHandler= UserHandler.getInstance();
+            UserTO userObj=new UserTO();
+                userObj.setId(Long.parseLong(jTextField4.getText()));
+                userObj.setUserId(jTextField1.getText());
+                userObj.setPassword(jTextField2.getText());
+                userObj.setRole(jComboBox2.getSelectedItem().toString());
+                userObj.setStatus(jComboBox1.getSelectedItem().toString());
+		boolean flag=userHandler.updateUser(userObj);
+
+		return flag;
+	}
+
+	
+
+        
+        private void loadRecords() {
+		UserHandler userHandler= UserHandler.getInstance();
+		List<UserTO> userList = userHandler.getAllUsers();
+		UserTableModel tableModel = new UserTableModel(userList);
+		jTable1.setModel(tableModel);
+                 jTable1.getColumnModel().getColumn(4).setMinWidth(0);
+                jTable1.getColumnModel().getColumn(4).setMaxWidth(0);
+                jTable1.getColumnModel().getColumn(4).setWidth(0);
+		jTable1.setSize(1000, 700);
+		jTable1.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent event) {
+						try {
+							if (jTable1.getSelectedRow() >= 0) {
+								jTextField1.setEnabled(false);
+								// String
+								// code,name,desc,hour,txtAddress1,txtAddress2,txtCity,txtState;
+								Object id = jTable1.getValueAt(
+										jTable1.getSelectedRow(), 4);
+								Object userId = jTable1.getValueAt(
+										jTable1.getSelectedRow(), 0);
+                                                                Object password = jTable1.getValueAt(
+										jTable1.getSelectedRow(), 1);
+								Object role = jTable1.getValueAt(
+										jTable1.getSelectedRow(), 2);
+								Object status = jTable1.getValueAt(
+										jTable1.getSelectedRow(), 3);
+								
+
+								jTextField1.setText(userId.toString());
+                                                                jTextField2.setText(password.toString());
+                                                                
+                                                                jTextField4.setText(id.toString());
+                                                                
+                                                                jComboBox2.setSelectedItem(role.toString());
+                                                                jComboBox1.setSelectedItem(status.toString());
+                                                                
+                                                                
+                                                                
+								
+							}
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				});
+
+		
+
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(SwingConstants.LEFT);
+		jTable1.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
+	}
+        
+    /**
+     * Creates new form ClientUI
+     */
+    public UserUI(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jTextField4 = new javax.swing.JTextField();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Eagle Consulting Invoice Ltd.   ::User");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("User Record Editor"));
+        jTextField4.setVisible(false);
+
+        jLabel1.setText("User Id");
+
+        jLabel2.setText("Password");
+
+        jLabel3.setText("Role");
+
+        jLabel13.setText("Status");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Accountant", "Developer", "Manager" }));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(54, 54, 54))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(185, 185, 185))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel13)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 135, Short.MAX_VALUE))
+        );
+
+        jTextField1.getAccessibleContext().setAccessibleName("");
+
+        jButton1.setBackground(new java.awt.Color(159, 189, 251));
+        jButton1.setLabel("Add New");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setBackground(new java.awt.Color(159, 189, 251));
+        jButton2.setLabel("Update");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(159, 189, 251));
+        jButton3.setLabel("Close");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 877, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addComponent(jButton1)
+                .addGap(51, 51, 51)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addGap(24, 24, 24))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        addRecord = true;
+
+		clearInputBoxes();
+
+		jTextField1.requestFocus();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int dialogResult = JOptionPane.showConfirmDialog(null,
+				"Are you sure you want to update this record?",
+				"Confirm Update Record?", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			try {
+				if (addRecord == true) {
+					int ret = addNew();
+					if (ret == 1) {
+						String message = " Record added.";
+						JOptionPane.showMessageDialog(new JFrame(), message,
+								"Dialog", JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else {
+					boolean ret = updateRecord();
+					String message = "";
+					if (ret) {
+						message = " Record updated";
+					} else
+						message = " Record failed to update";
+					JOptionPane.showMessageDialog(new JFrame(), message,
+							"Dialog", JOptionPane.INFORMATION_MESSAGE);
+
+				}
+
+				addRecord = false;
+				loadRecords();
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        MainMenu x = new MainMenu();
+
+		getContentPane().getParent().getParent().getParent().setVisible(false);
+		// getContentPane().getParent().removeAll();
+		x.main(null);
+		// System.exit(1);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        loadRecords();
+        jTable1.setRowSelectionInterval(0, 0);
+    }//GEN-LAST:event_formWindowOpened
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(UserUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(UserUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(UserUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(UserUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                UserUI dialog = new UserUI(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+    private void btnAddNewActionPerformed(java.awt.event.ActionEvent evt) {
+		addRecord = true;
+
+		clearInputBoxes();
+
+		jTextField1.requestFocus();
+	}
+
+	private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {
+		MainMenu x = new MainMenu();
+
+		getContentPane().getParent().getParent().getParent().setVisible(false);
+		// getContentPane().getParent().removeAll();
+		x.main(null);
+		// System.exit(1);
+	}
+
+	private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
+		int dialogResult = JOptionPane.showConfirmDialog(null,
+				"Are you sure you want to delete this record?",
+				"Confirm Delete Record?", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			try {
+				boolean ret = true;//deleteRecord();
+				String message = "";
+				if (ret) {
+					message = " Record deleted";
+				} else
+					message = " Record failed to delete";
+				JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+						JOptionPane.INFORMATION_MESSAGE);
+				loadRecords();
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+	}
+
+	private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
+		int dialogResult = JOptionPane.showConfirmDialog(null,
+				"Are you sure you want to update this record?",
+				"Confirm Update Record?", JOptionPane.YES_NO_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			try {
+				if (addRecord == true) {
+					int ret =1;// addNew();
+					if (ret == 1) {
+						String message = " Record added.";
+						JOptionPane.showMessageDialog(new JFrame(), message,
+								"Dialog", JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else {
+					boolean ret = true;//updateRecord();
+					String message = "";
+					if (ret) {
+						message = " Record updated";
+					} else
+						message = " Record failed to update";
+					JOptionPane.showMessageDialog(new JFrame(), message,
+							"Dialog", JOptionPane.INFORMATION_MESSAGE);
+
+				}
+
+				addRecord = false;
+				loadRecords();
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+	}
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField4;
+    // End of variables declaration//GEN-END:variables
+}
