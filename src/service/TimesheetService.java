@@ -164,6 +164,11 @@ public class TimesheetService {
            obj.setProject(timesheetObj.getProject());
            obj.setDuration(timesheetObj.getDuration());
            obj.setUserId(timesheetObj.getUserId());
+           if(timesheetObj.isApproved()){
+               obj.setApproved(true);
+               obj.setApprovedBy(timesheetObj.getApprovedBy());
+               obj.setApprovedOn(new Date());
+           }
            entitymanager.getTransaction( ).begin( );
          entitymanager.merge(obj );
          entitymanager.getTransaction( ).commit( );

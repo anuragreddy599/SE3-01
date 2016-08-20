@@ -60,6 +60,11 @@ public class TimesheetHandler {
                     obj.setProject((int)jTable1.getValueAt(i, 0));
                     System.out.println("Project :"+jTable1.getValueAt(i, 0));
                     obj.setUserId(LoginHandler.getUser().getUserId());
+                    //If It is manager then auto approve
+                    if(LoginHandler.getUser().getRole().equalsIgnoreCase("Manager")){
+                        obj.setApproved(true);
+                        obj.setApprovedBy(LoginHandler.getUser().getUserId());
+                    }
                     System.out.println("User :"+LoginHandler.getUser().getUserId());
                     String date=jTable1.getColumnName(j);
                     SimpleDateFormat formatter = new SimpleDateFormat(" EEE dd/MMM/yyyy");

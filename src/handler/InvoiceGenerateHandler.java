@@ -16,14 +16,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-//import javafx.collections.transformation.SortedList;
 import javax.activation.DataSource;
 import javax.mail.util.ByteArrayDataSource;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JREmptyDataSource;
+
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -193,16 +190,7 @@ public class InvoiceGenerateHandler {
                        }
                     }
                 }
-                if(invoiceFreq.equals("Monthly-Cal")){
-                    Date currentDate=new Date();
-                    if(null!=lastInvoiceDate){
-                        long msDiff=currentDate.getTime()-lastInvoiceDate.getTime();
-                       long daysDiff = Math.round(msDiff / ((double)MILLIS_PER_DAY)); 
-                       if( daysDiff<30){
-                           iter.remove();
-                       }
-                    }
-                }
+               
             }
                 return invoiceMap;
     }
