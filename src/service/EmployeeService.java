@@ -10,9 +10,18 @@ import javax.persistence.Query;
 
 import com.entity.Client;
 import com.entity.Employee;
+import com.entity.User;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
+import pojo.ClientTO;
+import pojo.EmployeeTO;
+import pojo.UserTO;
 
- 
 
 public class EmployeeService {
 
@@ -115,6 +124,5 @@ public class EmployeeService {
                 e.printStackTrace();
             }
         return obj;
-
     }
 }

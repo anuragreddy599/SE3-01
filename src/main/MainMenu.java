@@ -2,6 +2,7 @@ package main;
 
 import handler.CompanyHandler;
 import handler.InvoiceGenerateHandler;
+import handler.LoginHandler;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -30,12 +31,15 @@ import ui.ClientUI_back;
 
 import java.util.ArrayList;
 import java.util.List;
+import pojo.UserTO;
 import ui.AssignProjectUI;
+import ui.BudgetReport;
 import ui.ClientProjectUI;
 import ui.ClientUI;
 import ui.CompanyUI;
 import ui.EmployeeUI;
 import ui.TimesheetsApproveUI;
+import ui.TimesheetsReportUI;
 import ui.TimesheetsUI;
 import ui.UserUI;
 
@@ -73,6 +77,7 @@ public class MainMenu
 					MainMenu window = new MainMenu();
 					window.frame.setTitle("Eagle Consulting Invoice Ltd. ");
 					window.frame.setSize(700,500);
+                                        
 					window.frame.setVisible(true);
 				}
 				catch (Exception e)
@@ -112,18 +117,18 @@ public class MainMenu
 						.addContainerGap(101, Short.MAX_VALUE))
 				);
 		frame.getContentPane().setLayout(groupLayout);
-
+                frame.setMinimumSize(new java.awt.Dimension(800, 700));
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(SystemColor.activeCaption);
 		frame.setJMenuBar(menuBar);
                 
                 //String loggedInRole= MainClassExecute.loggedInRole;
                 
-		JMenu mnSecurity = new JMenu("Maintenance");
-		menuBar.add(mnSecurity);
+		JMenu mnMaintenance = new JMenu("Maintenance");
+		menuBar.add(mnMaintenance);
 
-		JMenuItem mntmXyz = new JMenuItem("Client");
-		mntmXyz.addActionListener(new ActionListener() {
+		JMenuItem mntmClient = new JMenuItem("Client");
+		mntmClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
@@ -131,10 +136,10 @@ public class MainMenu
 				x.main(null);
 			}
 		});
-		mnSecurity.add(mntmXyz);
+		mnMaintenance.add(mntmClient);
 
-		JMenuItem mntmCourse = new JMenuItem("Employee");
-		mntmCourse.addActionListener(new ActionListener() {
+		JMenuItem mntmEmployee = new JMenuItem("Employee");
+		mntmEmployee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
                                 
@@ -143,10 +148,10 @@ public class MainMenu
 				x.main(null);
 			}
 		});
-		mnSecurity.add(mntmCourse);
+		mnMaintenance.add(mntmEmployee);
 
-		JMenuItem mntmDegreePlan = new JMenuItem("Client Project");
-		mntmDegreePlan.addActionListener(new ActionListener() {
+		JMenuItem mntmClientProj = new JMenuItem("Client Project");
+		mntmClientProj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
@@ -154,10 +159,10 @@ public class MainMenu
 				x.main(null);
 			}
 		});
-		mnSecurity.add(mntmDegreePlan);
+		mnMaintenance.add(mntmClientProj);
                 
-                JMenuItem mntmForecast = new JMenuItem(" Assign Project");
-		mntmForecast.addActionListener(new ActionListener() {
+                JMenuItem mntmAssignProj = new JMenuItem("Assign Project");
+		mntmAssignProj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
@@ -165,11 +170,11 @@ public class MainMenu
 				x.main(null);
 			}
 		});
-		mnSecurity.add(mntmForecast);
+		mnMaintenance.add(mntmAssignProj);
                 
                 
-                JMenuItem mntmDegreePlanReq = new JMenuItem("Company");
-		mntmDegreePlanReq.addActionListener(new ActionListener() {
+                JMenuItem mntmCompany = new JMenuItem("Company");
+		mntmCompany.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				frame.setVisible(false);
@@ -177,23 +182,26 @@ public class MainMenu
 				x.main(null);
 			}
 		});
-		mnSecurity.add(mntmDegreePlanReq);
+		mnMaintenance.add(mntmCompany);
 
 	
-		JMenu mnSchedule = new JMenu("Generate Invoice");
+		JMenu mnGenerateInv = new JMenu("Generate Invoice");
                
-                    menuBar.add(mnSchedule);
+                    menuBar.add(mnGenerateInv);
 
-		JMenuItem mntmGenerateSchedule = new JMenuItem("Generate Invoice");
-		mntmGenerateSchedule.addActionListener(new ActionListener() {
+		JMenuItem mntmGenerateInvoice = new JMenuItem("Generate Invoice");
+		mntmGenerateInvoice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				//frame.setVisible(false);
 				InvoiceGenerateHandler.getInstance().generateInvoice();
+                                String message="The invoices for each project has  been generated \n and sent to respective client";
+                                JOptionPane.showMessageDialog(new JFrame(), message,
+							"Dialog", JOptionPane.INFORMATION_MESSAGE);
 				//x.main(null);
 			}
 		});
-		mnSchedule.add(mntmGenerateSchedule);
+		mnGenerateInv.add(mntmGenerateInvoice);
 
 		
 
@@ -243,13 +251,17 @@ public class MainMenu
                 mnReport.add(mntmBudget_Report);
                 mntmBudget_Report.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+//				frame.setVisible(false);
+//                                BudgetReport x=new BudgetReport(new javax.swing.JFrame(), true);
+//                                x.main(null);
 			}
 		});
                 mnReport.add(mntmTimesheet_Report);
                 mntmTimesheet_Report.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+//				frame.setVisible(false);
+//                                TimesheetsReportUI x=new TimesheetsReportUI(new javax.swing.JFrame(), true);
+//                                x.main(null);
 			}
 		});      
 		
@@ -277,6 +289,41 @@ public class MainMenu
 			}
 		});
                 menuBar.add(logoutItem);
+                
+                //Role based menu showing
+                UserTO userLoggedIn=LoginHandler.getInstance().getUser();
+                if(null!=userLoggedIn){
+                String loggedinRole=userLoggedIn.getRole();
+                //Admin, Accountant, Developer, Manager
+                if(loggedinRole.equals("Admin")){
+                    mnGenerateInv.setEnabled(false);
+                    mntmTimesheet_Report.setEnabled(false);
+                    mnReport.setEnabled(false);
+                    mntmAssignProj.setEnabled(false);
+                    
+                }else if(loggedinRole.equals("Accountant")){
+                    mntmAssignProj.setEnabled(false);
+                    mnSystem.setEnabled(false);
+                    mnTimesheets.setEnabled(false);
+                    
+                }else if(loggedinRole.equals("Developer")){
+                    mnMaintenance.setEnabled(false);
+                    mnGenerateInv.setEnabled(false);
+                    mntmApproveTimesheet.setEnabled(false);
+                    mnReport.setEnabled(false);
+                    mnSystem.setEnabled(false);
+                }else if(loggedinRole.equals("Manager")){
+                    //mnMaintenance.setEnabled(false);
+                    mntmClient.setEnabled(false);
+                    mntmEmployee.setEnabled(false);
+                    mntmClientProj.setEnabled(false);
+                    mntmCompany.setEnabled(false);
+                    mnGenerateInv.setEnabled(false);
+                    mnReport.setEnabled(false);
+                    mnSystem.setEnabled(false);
+                }
+                }
+                
                 
                /* //Initialize all data
                 if(!importFile.isImported)
