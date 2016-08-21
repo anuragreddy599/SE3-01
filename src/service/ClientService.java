@@ -114,5 +114,25 @@ public class ClientService {
       //emfactory.close( );
         }
     }
-
+    
+    public ClientTO findClient(Long number){
+        
+        //entitymanager.getTransaction( ).begin( ); 
+          Client client=  entitymanager.find(Client.class, (int) (long) number);
+          ClientTO obj= new ClientTO();
+			obj.setNumber(client.getNumber());
+			obj.setName(client.getName());
+			obj.setAddressLine1(client.getAddressLine1());
+			obj.setAddressLine2(client.getAddressLine2());
+			obj.setCity(client.getCity());
+			obj.setContact(client.getContact());
+			obj.setEmail(client.getEmail());
+			obj.setInvoiceFreq(client.getInvoiceFreq());
+			obj.setInvoiceGrouping(client.getInvoiceGrouping());
+                        obj.setBillingTerms(client.getBillingTerm());
+			obj.setState(client.getState());
+			obj.setStatus(client.getStatus());
+			obj.setZip(client.getZip());
+            return obj;            
+    }
 }

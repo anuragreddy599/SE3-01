@@ -5,31 +5,30 @@
  */
 package ui;
 
-import handler.ClientHandler;
+
 import handler.TimesheetHandler;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+
 import javax.swing.table.DefaultTableCellRenderer;
 import main.MainMenu;
 import pojo.ClientTO;
 import pojo.PersonProjectTO;
 import pojo.TimesheetTO;
-import ui.tableModel.ClientTableModel;
+
 import ui.tableModel.FillTimesheetTableModel;
+import ui.tableModel.TimesheetReportTableModel;
 
 /**
  *
  * @author Mantu
  */
-public class TimesheetsUI extends javax.swing.JDialog {
+public class TimesheetsReportUI extends javax.swing.JDialog {
 
    boolean addRecord = false;
 
@@ -42,18 +41,18 @@ public class TimesheetsUI extends javax.swing.JDialog {
     private void loadRecords() {
 		TimesheetHandler timesheetHandler= TimesheetHandler.getInstance();
 		List<ClientTO> clientList = timesheetHandler.getAllClients();
-	        FillTimesheetTableModel tableModel = new FillTimesheetTableModel(0);
+	        TimesheetReportTableModel tableModel = new TimesheetReportTableModel(0);
 		jTable1.setModel(tableModel);
 		jTable1.setSize(1000, 700);
-                List<PersonProjectTO> personProjList=timesheetHandler.getListProject();
-                int count=0;//personProjList.size();
-                
-                for(PersonProjectTO personProjectTO:personProjList){
-                    jTable1.setValueAt(personProjectTO.getNumber(), count, 0);
-                    //jTable1.setValueAt(personProjectTO.getNumber(), count, 0);
-                    count++;
-                }
-                fillSavedData(jTable1);
+//                List<PersonProjectTO> personProjList=timesheetHandler.getListProject();
+//                int count=0;//personProjList.size();
+//                
+//                for(PersonProjectTO personProjectTO:personProjList){
+//                    jTable1.setValueAt(personProjectTO.getNumber(), count, 0);
+//                    //jTable1.setValueAt(personProjectTO.getNumber(), count, 0);
+//                    count++;
+//                }
+//                fillSavedData(jTable1);
                 //jTable1.setModel(tableModel);
 //		jTable1.getSelectionModel().addListSelectionListener(
 //				new ListSelectionListener() {
@@ -129,7 +128,7 @@ public class TimesheetsUI extends javax.swing.JDialog {
     /**
      * Creates new form TimesheetsUI
      */
-    public TimesheetsUI(java.awt.Frame parent, boolean modal) {
+    public TimesheetsReportUI(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -148,7 +147,6 @@ public class TimesheetsUI extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(900, 600));
@@ -221,14 +219,6 @@ public class TimesheetsUI extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton3.setBackground(new java.awt.Color(159, 189, 251));
-        jButton3.setText("Save");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         jButton4.setBackground(new java.awt.Color(159, 189, 251));
         jButton4.setText("Close");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -242,20 +232,14 @@ public class TimesheetsUI extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 22, Short.MAX_VALUE)
                 .addComponent(jButton4))
         );
 
@@ -297,35 +281,27 @@ public class TimesheetsUI extends javax.swing.JDialog {
         JTable tablem=handlePrev();
   	jTable1.setModel(tablem.getModel());
         
-         List<PersonProjectTO> personProjList=TimesheetHandler.getInstance().getListProject();
-                int count=0;                
-                for(PersonProjectTO personProjectTO:personProjList){
-                    jTable1.setValueAt(personProjectTO.getNumber(), count, 0);
-                    count++;
-                }
-                fillSavedData(jTable1);
+//         List<PersonProjectTO> personProjList=TimesheetHandler.getInstance().getListProject();
+//                int count=0;                
+//                for(PersonProjectTO personProjectTO:personProjList){
+//                    jTable1.setValueAt(personProjectTO.getNumber(), count, 0);
+//                    count++;
+//                }
+                //fillSavedData(jTable1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         JTable tablem=handleNext();
         jTable1.setModel(tablem.getModel());
-        List<PersonProjectTO> personProjList=TimesheetHandler.getInstance().getListProject();
-                int count=0;                
-                for(PersonProjectTO personProjectTO:personProjList){
-                    jTable1.setValueAt(personProjectTO.getNumber(), count, 0);
-                    count++;
-                }
-                fillSavedData(jTable1);
+//        List<PersonProjectTO> personProjList=TimesheetHandler.getInstance().getListProject();
+//                int count=0;                
+//                for(PersonProjectTO personProjectTO:personProjList){
+//                    jTable1.setValueAt(personProjectTO.getNumber(), count, 0);
+//                    count++;
+//                }
+//                fillSavedData(jTable1);
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // Save the timesheet data
-        boolean bol=TimesheetHandler.getInstance().saveTimesheets(jTable1);
-        String message="Timesheet saved";
-        JOptionPane.showMessageDialog(new JFrame(), message,
-				"Dialog", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
@@ -346,7 +322,7 @@ public class TimesheetsUI extends javax.swing.JDialog {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TimesheetsUI dialog = new TimesheetsUI(new java.awt.Frame(), true);
+                TimesheetsReportUI dialog = new TimesheetsReportUI(new java.awt.Frame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
@@ -358,16 +334,16 @@ public class TimesheetsUI extends javax.swing.JDialog {
     }
  JTable handleNext(){
     	
-    	FillTimesheetTableModel obj= new FillTimesheetTableModel();
+    	TimesheetReportTableModel obj= new TimesheetReportTableModel();
     	//obj.callNext();
-    	JTable table = new JTable(new FillTimesheetTableModel("test"));
+    	JTable table = new JTable(new TimesheetReportTableModel("test"));
     	return table;
     }
     JTable handlePrev(){
     	
-    	FillTimesheetTableModel obj= new FillTimesheetTableModel();
+    	TimesheetReportTableModel obj= new TimesheetReportTableModel();
     	//obj.callNext();
-    	JTable table = new JTable(new FillTimesheetTableModel("test","test"));
+    	JTable table = new JTable(new TimesheetReportTableModel("test","test"));
     	return table;
     }
     
@@ -375,7 +351,6 @@ public class TimesheetsUI extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -401,6 +376,7 @@ public class TimesheetsUI extends javax.swing.JDialog {
                     System.out.println("sdate :"+sdate);
                     if(dateO.equals(sdate))
                         jTable1.setValueAt(timesheetTO.getDuration(), i, j);
+
                 }
             }
         }

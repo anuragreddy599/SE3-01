@@ -5,20 +5,20 @@
  */
 package service;
 
-import com.entity.Client;
+
 import com.entity.User;
-import java.util.ArrayList;
-import java.util.List;
+
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
+
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import pojo.ClientTO;
 import pojo.UserTO;
 
 /**
@@ -49,7 +49,9 @@ public class LoginService {
                 CriteriaBuilder cb=entitymanager.getCriteriaBuilder();
                 CriteriaQuery<User> cq=cb.createQuery(User.class);
                 Root<User> root = cq.from(User.class);
-                cq.where(cb.equal(root.get("userId"),userObj.getUserId()));
+                Predicate andClause =  cb.and(cb.equal(root.get("status"),"Active"));     
+                
+                cq.where(cb.equal(root.get("userId"),userObj.getUserId()),andClause);
               
                TypedQuery<User> query = entitymanager.createQuery(cq);
 
@@ -64,7 +66,7 @@ public class LoginService {
                             obj.setStatus(user.getStatus());
                         }
             }catch(NoResultException e){
-                e.printStackTrace();
+                e.getMessage();
             }	
 		
 		return obj;

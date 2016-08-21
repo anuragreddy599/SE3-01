@@ -6,17 +6,25 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
 import com.entity.Client;
 import com.entity.Invoice;
 import com.entity.InvoiceLineItem;
+import com.entity.Timesheets;
 import java.util.Iterator;
 import javax.persistence.PersistenceException;
+
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+
+import javax.persistence.criteria.Root;
 
 import pojo.ClientTO;
 import pojo.InvoiceTO;
 import pojo.LineItemTO;
+import pojo.TimesheetTO;
 
 
 public class InvoiceService {
@@ -35,63 +43,7 @@ public class InvoiceService {
 	      }
 	      return instance;
 	   }
-	public List<ClientTO> getAllClients() {
-		
-		Query query = entitymanager.
-	      createQuery("Select e from Client e");
-		List<Client> listClient=query.getResultList();
-                
-		//Convert from entity to TO
-		List<ClientTO> listTo= new ArrayList<ClientTO>();
-		for(Client clientObj:listClient){
-			ClientTO obj= new ClientTO();
-			obj.setNumber(clientObj.getNumber());
-			obj.setName(clientObj.getName());
-			obj.setAddressLine1(clientObj.getAddressLine1());
-			obj.setAddressLine2(clientObj.getAddressLine2());
-			obj.setCity(clientObj.getCity());
-			obj.setContact(clientObj.getContact());
-			obj.setEmail(clientObj.getEmail());
-			obj.setInvoiceFreq(clientObj.getInvoiceFreq());
-			obj.setInvoiceGrouping(clientObj.getInvoiceGrouping());
-                        obj.setBillingTerms(clientObj.getBillingTerm());
-			obj.setState(clientObj.getState());
-			obj.setStatus(clientObj.getStatus());
-			obj.setZip(clientObj.getZip());
-			listTo.add(obj);
-		}
-		return listTo;
-	}
-
-    public boolean updateClient(ClientTO clientObj) {
-        try{
-           entitymanager.getTransaction( ).begin( ); 
-          Client client=  entitymanager.find(Client.class, clientObj.getNumber());
-       
-        client.setNumber(clientObj.getNumber());
-        client.setName(clientObj.getName());
-        client.setAddressLine1(clientObj.getAddressLine1());
-        client.setAddressLine2(clientObj.getAddressLine2());
-        client.setCity(clientObj.getCity());
-        client.setState(clientObj.getState());
-        client.setZip(clientObj.getZip());
-        client.setEmail(clientObj.getEmail());
-        client.setContact(clientObj.getContact());
-        client.setInvoiceFreq(clientObj.getInvoiceFreq());
-        client.setBillingTerm(clientObj.getBillingTerms());
-        client.setInvoiceGrouping(clientObj.getInvoiceGrouping());
-        client.setStatus(clientObj.getStatus());
-        
-        
-         entitymanager.getTransaction( ).commit( );
-        }catch(PersistenceException e){
-            e.printStackTrace();
-        }finally{
-      //entitymanager.close( );
-      //emfactory.close( );
-        }
-      return true;  
-    }
+	
 
     public int addInvoice(InvoiceTO invoiceToObj) {
         int invoiceNo=0;
@@ -153,4 +105,31 @@ public class InvoiceService {
 			obj.setZip(client.getZip());
             return obj;            
     }
+
+   public List<InvoiceTO> findInvoiceForBudget(Long client, Long projectNumber) {
+        
+       CriteriaBuilder cb=entitymanager.getCriteriaBuilder();
+                CriteriaQuery<Invoice> cq=cb.createQuery(Invoice.class);
+                Root<Invoice> root = cq.from(Invoice.class);
+                //Predicate andClause =  cb.and(cb.equal(root.get("projectNumber"),true));     
+                cq.where(cb.equal(root.get("projectNumber"),projectNumber));
+                        
+                  
+                //cq.where(cb.equal(root.get("approved"),true));
+               
+               TypedQuery<Invoice> query = entitymanager.createQuery(cq);
+
+                List<Invoice> invoiceList= query.getResultList();
+                List<InvoiceTO> listTO= new ArrayList<InvoiceTO>();
+                for(Invoice invoice:invoiceList){
+                    InvoiceTO obj= new InvoiceTO();
+                    obj.setInvoiceDate(invoice.getInvoiceDate());
+                    obj.setProjectNumber(invoice.getProjectNumber());
+                    obj.setTotalAmountDue(invoice.getTotalAmountDue());
+                    obj.setInvoiceNo(String.valueOf(invoice.getInvoiceNo()));
+                    listTO.add(obj);
+                }
+                return listTO;
+    }
+
 }
