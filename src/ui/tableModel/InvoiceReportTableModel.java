@@ -1,24 +1,26 @@
 package ui.tableModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-import pojo.BudgetReportTO;
+import pojo.InvoiceReportTO;
 
 
-public class BudgetReportTableModel extends AbstractTableModel{
+public class InvoiceReportTableModel extends AbstractTableModel{
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<BudgetReportTO> li = new ArrayList<BudgetReportTO>();
-
-    private String[] columnNames = { "Client Id", "Client Name", "Project Id",
-                "Project Name", "Total Budget", "Budget Remaining"};
+	private List<InvoiceReportTO> li = new ArrayList<InvoiceReportTO>();
+    private String[] columnNames = { "Invoice Number","Client Id", "Project Id", 
+                "Project Name", "InvoiceDate", "Amount Due"};
 
     
-    public BudgetReportTableModel(List<BudgetReportTO> list){
+    public InvoiceReportTableModel(List<InvoiceReportTO> list){
          this.li = list;
     }
 
@@ -39,20 +41,30 @@ public class BudgetReportTableModel extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-    	BudgetReportTO si = li.get(rowIndex);
+    	InvoiceReportTO si = li.get(rowIndex);
         switch (columnIndex) {
             case 0: 
-                return si.getClientId();
+                return si.getInvoiceNumber();
             case 1:
-                return si.getClientName();
+                return si.getClientId();
             case 2:
-                return si.getProjectId();
+                return si.getProjectNumber();
             case 3:
                 return si.getProjectName();
-            case 4:
-                return si.getTotalBudget();
+            case 4:{
+                     String formattedDate=null;
+                     try{
+                    DateFormat originalFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    Date date1 = originalFormat.parse(si.getInvoiceDate().toString());
+                    formattedDate = targetFormat.format(date1); 
+                     }catch(Exception e){
+                         e.printStackTrace();
+                     }
+                return formattedDate;
+            }
             case 5:
-                return si.getBudgetRemaining();
+                return si.getTotalAmountDue();
               
                 
            }
@@ -74,7 +86,6 @@ public class BudgetReportTableModel extends AbstractTableModel{
                return String.class;
              case 5:
                return String.class;
-
               
                     
              }

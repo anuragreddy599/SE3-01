@@ -7,6 +7,7 @@ package ui;
 
 
 import handler.TimesheetHandler;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -375,6 +376,7 @@ public class TimesheetsReportUI extends javax.swing.JDialog {
                     System.out.println("sdate :"+sdate);
                     if(dateO.equals(sdate))
                         jTable1.setValueAt(timesheetTO.getDuration(), i, j);
+
                 }
             }
         }

@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
 import com.entity.Client;
 import com.entity.Invoice;
@@ -14,10 +13,12 @@ import com.entity.InvoiceLineItem;
 import com.entity.Timesheets;
 import java.util.Iterator;
 import javax.persistence.PersistenceException;
+
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
+
 import javax.persistence.criteria.Root;
 
 import pojo.ClientTO;
@@ -130,4 +131,5 @@ public class InvoiceService {
                 }
                 return listTO;
     }
+
 }

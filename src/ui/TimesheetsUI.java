@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
@@ -319,7 +321,10 @@ public class TimesheetsUI extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // Save the timesheet data
-        TimesheetHandler.getInstance().saveTimesheets(jTable1);
+        boolean bol=TimesheetHandler.getInstance().saveTimesheets(jTable1);
+        String message="Timesheet saved";
+        JOptionPane.showMessageDialog(new JFrame(), message,
+				"Dialog", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
