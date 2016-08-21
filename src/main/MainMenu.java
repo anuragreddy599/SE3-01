@@ -3,7 +3,7 @@ package main;
 import handler.CompanyHandler;
 import handler.InvoiceGenerateHandler;
 import handler.LoginHandler;
-import java.awt.Desktop;
+
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -35,9 +35,7 @@ import ui.ClientUI_back;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
+
 import pojo.UserTO;
 import ui.AssignProjectUI;
 import ui.BudgetReport;
@@ -261,17 +259,13 @@ public class MainMenu
                 mnReport.add(mntmBudget_Report);
                 mntmBudget_Report.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.setVisible(false);
-                                BudgetReport x=new BudgetReport(new javax.swing.JFrame(), true);
-                                x.main(null);
+
 			}
 		});
                 mnReport.add(mntmTimesheet_Report);
                 mntmTimesheet_Report.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.setVisible(false);
-                                TimesheetsReportUI x=new TimesheetsReportUI(new javax.swing.JFrame(), true);
-                                x.main(null);
+
 			}
 		});    
                 
@@ -329,7 +323,7 @@ public class MainMenu
 		});
                 menuBar.add(logoutItem);
                 
-                
+
                 //Role based menu showing
                 UserTO userLoggedIn=LoginHandler.getInstance().getUser();
                 if(null!=userLoggedIn){

@@ -3,7 +3,9 @@ package handler;
 import java.util.List;
 import pojo.BudgetReportTO;
 
-import pojo.InvoiceReportTO;
+
+import pojo.ClientTO;
+import service.ClientService;
 import service.ReportService;
 
 public class ReportHandler {
@@ -24,10 +26,15 @@ public class ReportHandler {
 		return ReportService.getInstance().getBudgetReport();
 	}
 
-   
+    public void addClient(ClientTO clientObj) {
+        ClientService.getInstance().addClient(clientObj);
+        
+    }
 
-    public List<InvoiceReportTO> getInvoiceReport() {
-        return ReportService.getInstance().getInvoiceReport();
+    public boolean updateClient(ClientTO clientObj) {
+        return ClientService.getInstance().updateClient(clientObj);
+        
+
     }
 
 }

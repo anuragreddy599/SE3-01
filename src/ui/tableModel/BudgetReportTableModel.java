@@ -13,7 +13,8 @@ public class BudgetReportTableModel extends AbstractTableModel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<BudgetReportTO> li = new ArrayList<BudgetReportTO>();
-    private String[] columnNames = { "Client Id", "Project Id",
+
+    private String[] columnNames = { "Client Id", "Client Name", "Project Id",
                 "Project Name", "Total Budget", "Budget Remaining"};
 
     
@@ -33,7 +34,7 @@ public class BudgetReportTableModel extends AbstractTableModel{
 
     @Override        
     public int getColumnCount() {
-        return 5; 
+        return 6; 
     }
 
     @Override
@@ -42,15 +43,15 @@ public class BudgetReportTableModel extends AbstractTableModel{
         switch (columnIndex) {
             case 0: 
                 return si.getClientId();
-//            case 1:
-//                return si.getClientName();
             case 1:
-                return si.getProjectId();
+                return si.getClientName();
             case 2:
-                return si.getProjectName();
+                return si.getProjectId();
             case 3:
-                return si.getTotalBudget();
+                return si.getProjectName();
             case 4:
+                return si.getTotalBudget();
+            case 5:
                 return si.getBudgetRemaining();
               
                 
@@ -71,8 +72,9 @@ public class BudgetReportTableModel extends AbstractTableModel{
                return String.class;
              case 4:
                return String.class;
-//             case 5:
-//               return String.class;
+             case 5:
+               return String.class;
+
               
                     
              }
