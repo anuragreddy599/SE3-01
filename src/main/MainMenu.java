@@ -3,6 +3,7 @@ package main;
 import handler.CompanyHandler;
 import handler.InvoiceGenerateHandler;
 import handler.LoginHandler;
+import java.awt.Desktop;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -20,7 +21,10 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.swing.JPanel;
 
@@ -31,6 +35,9 @@ import ui.ClientUI_back;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 import pojo.UserTO;
 import ui.AssignProjectUI;
 import ui.BudgetReport;
@@ -38,6 +45,9 @@ import ui.ClientProjectUI;
 import ui.ClientUI;
 import ui.CompanyUI;
 import ui.EmployeeUI;
+import ui.HelpUI;
+import static ui.HelpUI.stream2file;
+import ui.InvoiceReportUI;
 import ui.TimesheetsApproveUI;
 import ui.TimesheetsReportUI;
 import ui.TimesheetsUI;
@@ -251,19 +261,29 @@ public class MainMenu
                 mnReport.add(mntmBudget_Report);
                 mntmBudget_Report.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				frame.setVisible(false);
-//                                BudgetReport x=new BudgetReport(new javax.swing.JFrame(), true);
-//                                x.main(null);
+				frame.setVisible(false);
+                                BudgetReport x=new BudgetReport(new javax.swing.JFrame(), true);
+                                x.main(null);
 			}
 		});
                 mnReport.add(mntmTimesheet_Report);
                 mntmTimesheet_Report.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				frame.setVisible(false);
-//                                TimesheetsReportUI x=new TimesheetsReportUI(new javax.swing.JFrame(), true);
-//                                x.main(null);
+				frame.setVisible(false);
+                                TimesheetsReportUI x=new TimesheetsReportUI(new javax.swing.JFrame(), true);
+                                x.main(null);
 			}
-		});      
+		});    
+                
+                 JMenuItem mntmInvoice_Report = new JMenuItem("Invoice Report");
+                 mnReport.add(mntmInvoice_Report);
+                 mntmInvoice_Report.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.setVisible(false);
+                                InvoiceReportUI x=new InvoiceReportUI(new javax.swing.JFrame(), true);
+                                x.main(null);
+			}
+		});
 		
                 JMenu mnSystem = new JMenu("System");     
                 menuBar.add(mnSystem);
@@ -276,8 +296,27 @@ public class MainMenu
         				UserUI x=new UserUI(new javax.swing.JFrame(), true);
         				x.main(null);
         			}
-        		});      
+        		});    
                 
+                
+                JMenu mnHelp = new JMenu("Help");     
+                menuBar.add(mnHelp);
+               JMenuItem helpItem = new JMenuItem("Help");
+		helpItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+                            Desktop ccc=Desktop.getDesktop();
+                            InputStream is=this.getClass().getResourceAsStream("/report/Help screen.pdf");
+                        try {
+                            File file=stream2file(is);
+                            ccc.open(file);//(new File("/report/generateInvoice_1001.pdf"));
+                            //add(jPanel1);
+                        } catch (IOException ex) {
+                            Logger.getLogger(HelpUI.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+			}
+		});
+                mnHelp.add(helpItem); 
                 
          JMenuItem logoutItem = new JMenuItem("Log out");
 		logoutItem.addActionListener(new ActionListener() {
@@ -289,6 +328,7 @@ public class MainMenu
 			}
 		});
                 menuBar.add(logoutItem);
+                
                 
                 //Role based menu showing
                 UserTO userLoggedIn=LoginHandler.getInstance().getUser();
@@ -333,4 +373,12 @@ public class MainMenu
     private String getCompanyName() {
         return CompanyHandler.getInstance().getCompany().getName();
     }
+    public static File stream2file (InputStream in) throws IOException {
+                final File tempFile = File.createTempFile("help", ".pdf");
+                tempFile.deleteOnExit();
+                try (FileOutputStream out = new FileOutputStream(tempFile)) {
+                    IOUtils.copy(in, out);
+                }
+                return tempFile;
+            }
 }

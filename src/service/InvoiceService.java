@@ -6,24 +6,21 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
 import com.entity.Client;
 import com.entity.Invoice;
 import com.entity.InvoiceLineItem;
-import com.entity.Timesheets;
 import java.util.Iterator;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import pojo.ClientTO;
 import pojo.InvoiceTO;
 import pojo.LineItemTO;
-import pojo.TimesheetTO;
 
 
 public class InvoiceService {
@@ -130,4 +127,22 @@ public class InvoiceService {
                 }
                 return listTO;
     }
+   
+   public List<InvoiceTO> getAllInvoice(){
+           List<InvoiceTO> listInvoiceTO=new ArrayList<>();
+            Query query = entitymanager.
+	      createQuery("Select e from Invoice e");
+		List<Invoice> listInvoice=query.getResultList();  
+                Iterator iter=listInvoice.iterator();
+                while(iter.hasNext()){
+                    Invoice invoice=(Invoice)iter.next();
+                    InvoiceTO invoiceTo= new InvoiceTO();
+                    invoiceTo.setProjectNumber(invoice.getProjectNumber());
+                    invoiceTo.setInvoiceDate(invoice.getInvoiceDate());
+                    invoiceTo.setInvoiceNo(String.valueOf(invoice.getInvoiceNo()));
+                    invoiceTo.setTotalAmountDue(invoice.getTotalAmountDue());
+                    listInvoiceTO.add(invoiceTo);
+                }
+              return listInvoiceTO;     
+         }
 }

@@ -9,6 +9,7 @@ import handler.TimesheetHandler;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Vector;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -21,12 +22,20 @@ public class TimesheetReportTableModel extends AbstractTableModel {
 	
 	public static Date currentStartDate=new Date(); 
 	public static Date currentEndDate=new Date();
+        static Calendar cal=Calendar.getInstance( Locale.US);
+        public static int currentStartWeek=0;
+        public static int currentEndWeek=0;
+        static{
+            cal.clear();
+        cal.setTime (currentStartDate);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+       
+        }
         int r=getRowCount();
 	Object[][] data = new Object[r][8];
 	
 	private static final long serialVersionUID = 1L;
-	Calendar cal= Calendar.getInstance();
-	//cal.clear();
+	
 	String[] columnNames=new String[8];
 	public TimesheetReportTableModel(){
 		data = new Object[r][8];
@@ -34,31 +43,62 @@ public class TimesheetReportTableModel extends AbstractTableModel {
     
     public TimesheetReportTableModel(int s){
     	SimpleDateFormat sdf;
-    	sdf = new SimpleDateFormat(" EEE dd/MMM/yyyy ");
+    	sdf = new SimpleDateFormat("dd/MMM/yyyy ");
     	
     	
-    	Calendar cal= Calendar.getInstance();
+    	Calendar cal= Calendar.getInstance( Locale.US);
     	cal.clear();
     	//String[] columnNames=new String[7];
     	cal.setTime(new Date());
     	cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
-    	currentStartDate=cal.getTime();
+        
+    	currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        Calendar clone=(Calendar)cal.clone();
+        clone.getFirstDayOfWeek();
+        clone.add(Calendar.DAY_OF_YEAR, 6);
+    	this.columnNames[0]="Employee";
+    	this.columnNames[1]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
     	
-    	this.columnNames[0]="Project";
-    	this.columnNames[1]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[2]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[3]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[4]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[5]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[6]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[7]=sdf.format(cal.getTime());
-    	currentEndDate=cal.getTime();
+        
+        cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+        
+    	this.columnNames[2]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[3]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[4]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[5]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[6]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[7]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	currentEndWeek=cal.get(Calendar.WEEK_OF_YEAR);
     	
     }
 
@@ -66,29 +106,62 @@ public class TimesheetReportTableModel extends AbstractTableModel {
 		// TODO Auto-generated constructor stub
     	
     	SimpleDateFormat sdf;
-    	sdf = new SimpleDateFormat(" EEE dd/MMM/yyyy ");
+    	sdf = new SimpleDateFormat("dd/MMM/yyyy ");
     	
     	
-    	Calendar cal= Calendar.getInstance();
+    	Calendar cal= Calendar.getInstance( Locale.US);
     	cal.clear();
     	cal.setTime(currentEndDate);
-    	cal.add(Calendar.DATE,1);
-    	currentStartDate=cal.getTime();
-    	this.columnNames[0]="Project";
-		this.columnNames[1]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[2]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[3]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[4]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[5]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[6]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[7]=sdf.format(cal.getTime());
-    	currentEndDate=cal.getTime();
+        
+        cal.set(Calendar.WEEK_OF_YEAR, currentEndWeek);
+        cal.add(Calendar.WEEK_OF_YEAR,1);
+    	currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        Calendar clone=(Calendar)cal.clone();
+        clone.getFirstDayOfWeek();
+        //clone.add(Calendar.DAY_OF_YEAR, 6);
+        
+        
+    	this.columnNames[0]="Employee";
+		this.columnNames[1]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+                System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[2]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[3]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[4]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[5]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[6]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[7]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	currentEndWeek=cal.get(Calendar.WEEK_OF_YEAR);
     	
 	}
 
@@ -96,59 +169,122 @@ public class TimesheetReportTableModel extends AbstractTableModel {
 		// TODO Auto-generated constructor stub
     	
     	SimpleDateFormat sdf;
-    	sdf = new SimpleDateFormat(" EEE dd/MMM/yyyy ");
+    	sdf = new SimpleDateFormat("dd/MMM/yyyy ");
     	
     	
-    	Calendar cal= Calendar.getInstance();
+    	Calendar cal= Calendar.getInstance( Locale.US);
     	cal.clear();
-    	cal.setTime(currentStartDate);
-    	cal.add(Calendar.DATE,-7);
-    	//cal.setTime(currentEndDate);
-    	//cal.add(Calendar.DATE,1);
-    	currentStartDate=cal.getTime();
-    	this.columnNames[0]="Project";
-		this.columnNames[1]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[2]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[3]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[4]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[5]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[6]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[7]=sdf.format(cal.getTime());
-    	currentEndDate=cal.getTime();
+    	cal.setTime(currentEndDate);
+        
+        cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        cal.add(Calendar.WEEK_OF_YEAR,-13);
+    	currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        Calendar clone=(Calendar)cal.clone();
+        clone.getFirstDayOfWeek();
+        //clone.add(Calendar.DAY_OF_YEAR, 6);
+        
+        
+    	this.columnNames[0]="Employee";
+		this.columnNames[1]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+                System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[2]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[3]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[4]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[5]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[6]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[7]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(cal.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	currentEndWeek=cal.get(Calendar.WEEK_OF_YEAR);
     	
 	}
 	public  void callNext() {
 		// TODO Auto-generated method stub
 		SimpleDateFormat sdf;
-    	sdf = new SimpleDateFormat(" EEE dd/MMM/yyyy ");
+    	sdf = new SimpleDateFormat(" dd/MMM/yyyy ");
     	
     	
-    	Calendar cal= Calendar.getInstance();
+    	Calendar cal= Calendar.getInstance( Locale.US);
     	cal.clear();
     	cal.setTime(currentEndDate);
-    	cal.add(Calendar.DATE,1);
-    	currentStartDate=cal.getTime();
-    	this.columnNames[0]="Project";
-		this.columnNames[1]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[2]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[3]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[4]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[5]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[6]=sdf.format(cal.getTime());
-    	cal.add(Calendar.DATE,1);
-    	this.columnNames[7]=sdf.format(cal.getTime());
-    	currentEndDate=cal.getTime();
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        Calendar clone=(Calendar)cal.clone();
+        clone.getFirstDayOfWeek();
+        clone.add(Calendar.DAY_OF_YEAR, 6);
+        
+    	
+    	this.columnNames[0]="Employee";
+		this.columnNames[1]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+                System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[2]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[3]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[4]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[5]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[6]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	cal.add(Calendar.WEEK_OF_YEAR,1);
+        currentStartWeek=cal.get(Calendar.WEEK_OF_YEAR);
+    	cal.set(Calendar.WEEK_OF_YEAR, currentStartWeek);
+        clone=getClone(cal);
+    	this.columnNames[7]="<html>"+"Week "+currentStartWeek+" Ending on"+"<br/>"+sdf.format(clone.getTime())+"</html>";
+        System.out.println("WEEK"+cal.get(Calendar.WEEK_OF_YEAR));
+    	currentEndWeek=cal.get(Calendar.WEEK_OF_YEAR);
 	}
 
 	public final Object[] longValues = {"JaneXXXXXXXXXXXX", "KathyXXXXXXXXXXXX",
@@ -175,16 +311,16 @@ public class TimesheetReportTableModel extends AbstractTableModel {
         if(col==0)
             return false;
          else
-         return true;
+         return false;
     }
 
 	//@Override
 	public int getRowCount() {
 		// Row count equals to number of projects the developer is assigned
                 TimesheetHandler timesheetHandler= TimesheetHandler.getInstance();
-                //int i=timesheetHandler.getRowCount();
+                int i=timesheetHandler.getNumberOfEmplInTimesheet();
                 //data=new Object[i][8];
-		return 5;
+		return i;
 	}
 
 	//@Override
@@ -223,4 +359,12 @@ public class TimesheetReportTableModel extends AbstractTableModel {
       }
       System.out.println("--------------------------");
     }
+         
+         Calendar getClone(Calendar cal){
+             Calendar clone=(Calendar)cal.clone();
+                clone.getFirstDayOfWeek();
+                clone.add(Calendar.DAY_OF_YEAR, 6);
+                
+                return clone;
+         }
 }
