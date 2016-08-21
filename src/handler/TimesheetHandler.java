@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JTable;
 
 import pojo.ClientTO;
@@ -49,7 +50,7 @@ public class TimesheetHandler {
            return TimesheetService.getInstance().getProjectCount();
     }
 
-    public void saveTimesheets(JTable jTable1) {
+    public boolean saveTimesheets(JTable jTable1) {
         try{
         int rowCount=jTable1.getModel().getRowCount();
         List<TimesheetTO> listTO= new ArrayList<TimesheetTO>();
@@ -60,6 +61,11 @@ public class TimesheetHandler {
                     obj.setProject((int)jTable1.getValueAt(i, 0));
                     System.out.println("Project :"+jTable1.getValueAt(i, 0));
                     obj.setUserId(LoginHandler.getUser().getUserId());
+                    //If It is manager then auto approve
+                    if(LoginHandler.getUser().getRole().equalsIgnoreCase("Manager")){
+                        obj.setApproved(true);
+                        obj.setApprovedBy(LoginHandler.getUser().getUserId());
+                    }
                     System.out.println("User :"+LoginHandler.getUser().getUserId());
                     String date=jTable1.getColumnName(j);
                     SimpleDateFormat formatter = new SimpleDateFormat(" EEE dd/MMM/yyyy");
@@ -77,6 +83,7 @@ public class TimesheetHandler {
         }catch(Exception e){
             e.printStackTrace();
         }
+        return true;
     }
 
     public List<TimesheetTO> getSavedTimesheets() {
@@ -121,4 +128,15 @@ public class TimesheetHandler {
         return TimesheetService.getInstance().getTimesheetsOfProject( projectNumber);
     }
 
+   public int getNumberOfEmplInTimesheet(){
+       return TimesheetService.getInstance().getNumberOfEmplInTimesheet( );
+   }
+   public List<String> getEmplInTimesheet(){
+       return TimesheetService.getInstance().getEmplInTimesheet( );
+   }
+
+    public Map<String, Object> getWeeklyTimesheets() {
+        return TimesheetService.getInstance().getWeeklyTimesheets( );
+    }
+   
 }

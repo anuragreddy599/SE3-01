@@ -8,10 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import com.entity.Client;
 import com.entity.ClientProject;
-import com.entity.User;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,8 +20,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import pojo.ClientProjectTO;
 
-import pojo.ClientTO;
-import pojo.UserTO;
 
 
 public class ClientProjectService {
@@ -177,6 +172,27 @@ public class ClientProjectService {
                 
 		
                     projectName=clientProject.getProjectName();
+                
+			
+            }catch(NoResultException e){
+                e.printStackTrace();
+            }
+         return projectName;
+    }
+    public Long findClientFromProject(Long projectNo){
+        
+       Long projectName=null;
+         try{
+                CriteriaBuilder cb=entitymanager.getCriteriaBuilder();
+                CriteriaQuery<ClientProject> cq=cb.createQuery(ClientProject.class);
+                Root<ClientProject> root = cq.from(ClientProject.class);
+                cq.where(cb.equal(root.get("projectNumber"),projectNo));
+              
+               TypedQuery<ClientProject> query = entitymanager.createQuery(cq);
+                ClientProject clientProject= query.getSingleResult();
+                
+		
+                    projectName=clientProject.getClient();
                 
 			
             }catch(NoResultException e){

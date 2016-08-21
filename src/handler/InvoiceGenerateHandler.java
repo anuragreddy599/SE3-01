@@ -1,7 +1,6 @@
 package handler;
 
 import com.entity.Invoice;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,21 +15,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-//import javafx.collections.transformation.SortedList;
 import javax.activation.DataSource;
 import javax.mail.util.ByteArrayDataSource;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JREmptyDataSource;
+
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
-import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import pojo.ClientProjectTO;
 import pojo.ClientTO;
 import pojo.CompanyTO;
@@ -62,7 +57,7 @@ public class InvoiceGenerateHandler {
 	      return instance;
 	   }
 
-    public void generateInvoice() {
+    public boolean generateInvoice() {
         
        Map <Long,InvoiceGenTO> invoiceMap= getConsolidatedData();
        Map <Long,InvoiceGenTO> filteredMap= filterBasedOnLastInvoiceDate(invoiceMap);
@@ -88,7 +83,7 @@ public class InvoiceGenerateHandler {
                     
                 }
             }
-        
+        return true;
     }
 
     private Map<Long, InvoiceGenTO> getConsolidatedData() {
@@ -203,6 +198,7 @@ public class InvoiceGenerateHandler {
                        }
                     }
                 }
+               
             }
                 return invoiceMap;
     }
@@ -369,7 +365,7 @@ public class InvoiceGenerateHandler {
        System.out.println("Printing.......");
        
 //       /* START :Enable this to generate pdf file instead of send email*/
-//            String outputFile="G:/Documents/Anurag/Project2/workspace_eclipse/generateInvoice_"+invoiceTO.getProjectNumber()+".pdf";
+//            String outputFile="G:/Documents/Anurag/Project2/workspace_eclipse/generatedInvoice/generateInvoice_"+invoiceTO.getProjectNumber()+".pdf";
 //            /* outputStream to create PDF */
 //            OutputStream outputStream = new FileOutputStream(new File(outputFile));
 //            /* Write content to PDF file */
