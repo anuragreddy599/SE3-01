@@ -17,6 +17,34 @@ public class TimesheetTO {
     private int project;
     private Date date;
     private int duration;
+    private boolean approved;
+    private String approvedBy;
+    private Date approvedOn;
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    public String getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public Date getApprovedOn() {
+        return approvedOn;
+    }
+
+    public void setApprovedOn(Date approvedOn) {
+        this.approvedOn = approvedOn;
+    }
+    
 
     public String getUserId() {
         return userId;

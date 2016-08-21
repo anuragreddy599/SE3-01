@@ -13,7 +13,12 @@ import com.entity.ProjectPerson;
 import com.entity.Timesheets;
 import com.entity.User;
 import handler.LoginHandler;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
@@ -164,6 +169,11 @@ public class TimesheetService {
            obj.setProject(timesheetObj.getProject());
            obj.setDuration(timesheetObj.getDuration());
            obj.setUserId(timesheetObj.getUserId());
+           if(timesheetObj.isApproved()){
+               obj.setApproved(true);
+               obj.setApprovedBy(timesheetObj.getApprovedBy());
+               obj.setApprovedOn(new Date());
+           }
            entitymanager.getTransaction( ).begin( );
          entitymanager.merge(obj );
          entitymanager.getTransaction( ).commit( );
@@ -256,5 +266,66 @@ public class TimesheetService {
                     listTO.add(obj);
                 }
                 return listTO;
+    }
+
+    public int getNumberOfEmplInTimesheet() {
+        Query query = entitymanager.
+	      createQuery("Select count(e) from Timesheets e GROUP BY e.userId");
+		List<Integer> count=query.getResultList();
+         return count.size();       
+    }
+
+    public List<String> getEmplInTimesheet() {
+        Query query = entitymanager.
+	      createQuery("Select DISTINCT( e.userId) from Timesheets e ");
+		List<String> listTimesheet=query.getResultList();
+//            Iterator iter=listTimesheet.iterator();
+//            List<String> listEmp= new ArrayList<>();
+//            while(iter.hasNext()){
+//                Timesheets timesheets=(Timesheets)iter.next();
+//                listEmp.add(timesheets.getUserId());
+//            }
+            return listTimesheet;
+    }
+
+    public Map<String,Object> getWeeklyTimesheets() {
+        
+                Query query = entitymanager.
+                createQuery("Select e from Timesheets e ");
+		
+                List<Timesheets> timesheetList= query.getResultList();
+                List<TimesheetTO> listTO= new ArrayList<TimesheetTO>();
+                Map<String,Object> userMap= new HashMap<String,Object>();
+                for(Timesheets timesheets:timesheetList){
+                    if(userMap.containsKey(timesheets.getUserId())){
+                      Map timeMap=(Map)  userMap.get(timesheets.getUserId());
+                      Date date=timesheets.getDate();
+                      Calendar cal= Calendar.getInstance();
+                      cal.setTime(date);
+                      int currentWeek=cal.get(Calendar.WEEK_OF_YEAR);
+                      if(timeMap.containsKey(currentWeek)){
+                          int time=(int)timeMap.get(currentWeek);
+                          time=time+timesheets.getDuration();
+                          timeMap.put(currentWeek, time);
+                          userMap.put(timesheets.getUserId(), timeMap);
+                      }  else{
+                          Map newTimeMap=new HashMap();
+                          timeMap.put(currentWeek, timesheets.getDuration());
+                          
+                      }
+                    }else{
+                        Map timeMap= new HashMap();
+                        Date date=timesheets.getDate();
+                        Calendar cal= Calendar.getInstance();
+                        cal.setTime(date);
+                        int currentWeek=cal.get(Calendar.WEEK_OF_YEAR);
+                        Map newTimeMap=new HashMap();
+                        newTimeMap.put(currentWeek, timesheets.getDuration());
+                        userMap.put(timesheets.getUserId(), newTimeMap);
+                      
+                    }
+                   
+                }
+                return userMap;
     }
 }
