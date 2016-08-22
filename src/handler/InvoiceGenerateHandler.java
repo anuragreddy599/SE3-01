@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -68,7 +69,9 @@ public class InvoiceGenerateHandler {
                 Map.Entry<Long, InvoiceGenTO> entry = iter.next();
                 InvoiceGenTO invoiceGenTO=entry.getValue();
                 Map<Long, List<TimesheetTO>> timesheetsTO=invoiceGenTO.getTimeSheets();
+                if(null!=timesheetsTO){
                 Iterator<Map.Entry<Long, List<TimesheetTO>>> projIter = timesheetsTO.entrySet().iterator();
+                Date lastInvoiceDate=invoiceGenTO.getLastInvoiceDate();
                 while(projIter.hasNext()){
                    Map.Entry<Long, List<TimesheetTO>> projEntry = projIter.next();
                     List<TimesheetTO> listTimesheet=projEntry.getValue();
@@ -82,6 +85,7 @@ public class InvoiceGenerateHandler {
                     }
                     
                 }
+            }
             }
         return true;
     }
@@ -190,13 +194,15 @@ public class InvoiceGenerateHandler {
                 }
                 if(invoiceFreq.equals("Monthly-Cal")){
                     Date currentDate=new Date();
-                    if(null!=lastInvoiceDate){
-                        long msDiff=currentDate.getTime()-lastInvoiceDate.getTime();
-                       long daysDiff = Math.round(msDiff / ((double)MILLIS_PER_DAY)); 
-                       if( daysDiff<30){
-                           iter.remove();
-                       }
-                    }
+                    invoiceGenTO=removeTimesheets(invoiceGenTO,lastInvoiceDate);
+                    invoiceMap.put(entry.getKey(), invoiceGenTO);
+//                    if(null!=lastInvoiceDate){
+//                        long msDiff=currentDate.getTime()-lastInvoiceDate.getTime();
+//                       long daysDiff = Math.round(msDiff / ((double)MILLIS_PER_DAY)); 
+//                       if( daysDiff<30){
+//                           iter.remove();
+//                       }
+//                    }
                 }
                
             }
@@ -364,22 +370,22 @@ public class InvoiceGenerateHandler {
        jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRMapCollectionDataSource(list));
        System.out.println("Printing.......");
        
-//       /* START :Enable this to generate pdf file instead of send email*/
-//            String outputFile="G:/Documents/Anurag/Project2/workspace_eclipse/generatedInvoice/generateInvoice_"+invoiceTO.getProjectNumber()+".pdf";
-//            /* outputStream to create PDF */
-//            OutputStream outputStream = new FileOutputStream(new File(outputFile));
-//            /* Write content to PDF file */
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-//            outputStream.flush();
-//            outputStream.close();
-//            /* END :Enable this to generate pdf file instead of send email*/
-            
+      /*  START :Enable this to generate pdf file instead of send email
+            String outputFile="G:/Documents/Anurag/Project2/workspace_eclipse/generatedInvoice/generateInvoice_"+invoiceTO.getProjectNumber()+".pdf";
+             outputStream to create PDF 
+            OutputStream outputStream = new FileOutputStream(new File(outputFile));
+             Write content to PDF file 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            JasperExportManager.exportReportToPdfStream(jasperPrint, baos);// Commented to 
-             aAttachment =  new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
+            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+            outputStream.flush();
+            outputStream.close();
+             END :Enable this to generate pdf file instead of send email*/
+            
+          ByteArrayOutputStream baos = new ByteArrayOutputStream();
+           JasperExportManager.exportReportToPdfStream(jasperPrint, baos);// Commented to 
+            aAttachment =  new ByteArrayDataSource(baos.toByteArray(), "application/pdf");
 
-//       ByteArrayOutputStream baos =new ByteArrayOutputStream();
+ //     ByteArrayOutputStream baos =new ByteArrayOutputStream();
 //       JasperExportManager.exportReportToPdfStream(jasperPrint,baos);
        //JasperExportManager.exportReportToPdf(jasperPrint, "G:/Documents/jasper_Training/SpermAnalysisReport.pdf");
 		}catch(Exception e){
@@ -399,5 +405,35 @@ public class InvoiceGenerateHandler {
             e.printStackTrace();
         }
         return formattedDate;
+    }
+
+    private InvoiceGenTO removeTimesheets(InvoiceGenTO invoiceGenTO, Date lastInvoiceDate) {
+        Calendar cal= Calendar.getInstance();
+        Date invDate=null;
+        if(null==lastInvoiceDate){
+            invDate=new Date();
+        }else{
+            invDate=lastInvoiceDate;
+        }
+            cal.setTime(invDate);
+            
+            int monthTobeConsidered=invDate.getMonth()-1;
+            if((lastInvoiceDate==null) || lastInvoiceDate.getMonth()!=invDate.getMonth()){
+                Map<Long, List<TimesheetTO>> timesheets=invoiceGenTO.getTimeSheets();
+                Iterator<Map.Entry<Long, List<TimesheetTO>>> iter = timesheets.entrySet().iterator();
+                while (iter.hasNext()) {
+                    Map.Entry<Long, List<TimesheetTO>> entry = iter.next();
+                    List<TimesheetTO> timesheetList=entry.getValue();
+                    Iterator timeIter=timesheetList.iterator();
+                    while(timeIter.hasNext()){
+                        TimesheetTO timesheetTO=(TimesheetTO)timeIter.next();
+                        if(timesheetTO.getDate().getMonth()!=monthTobeConsidered)
+                            timeIter.remove();
+                    }
+                }
+            }else{
+                invoiceGenTO.setTimeSheets(null);
+            }
+        return invoiceGenTO;
     }
 }
