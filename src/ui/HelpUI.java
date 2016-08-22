@@ -16,7 +16,9 @@ import main.MainMenu;
 import org.apache.commons.io.IOUtils;
 import org.icepdf.ri.common.SwingController;
 import org.icepdf.ri.common.SwingViewBuilder;
+<<<<<<< HEAD
 import sun.awt.DesktopBrowse;
+
 
 /**
  *

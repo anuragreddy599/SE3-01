@@ -14,6 +14,7 @@ public class BudgetReportTableModel extends AbstractTableModel{
 	private static final long serialVersionUID = 1L;
 	private List<BudgetReportTO> li = new ArrayList<BudgetReportTO>();
 
+
     private String[] columnNames = { "Client Id", "Client Name", "Project Id",
                 "Project Name", "Total Budget", "Budget Remaining"};
 
@@ -74,6 +75,68 @@ public class BudgetReportTableModel extends AbstractTableModel{
                return String.class;
              case 5:
                return String.class;
+
+
+    private String[] columnNames = { "Client Id", "Project Id",
+                "Project Name", "Total Budget", "Budget Remaining"};
+
+    
+    public BudgetReportTableModel(List<BudgetReportTO> list){
+         this.li = list;
+    }
+
+    @Override
+    public String getColumnName(int columnIndex){
+         return columnNames[columnIndex];
+    }
+
+    @Override     
+    public int getRowCount() {
+        return li.size();
+    }
+
+    @Override        
+    public int getColumnCount() {
+        return 5; 
+    }
+
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+    	BudgetReportTO si = li.get(rowIndex);
+        switch (columnIndex) {
+            case 0: 
+                return si.getClientId();
+//            case 1:
+//                return si.getClientName();
+            case 1:
+                return si.getProjectId();
+            case 2:
+                return si.getProjectName();
+            case 3:
+                return si.getTotalBudget();
+            case 4:
+                return si.getBudgetRemaining();
+              
+                
+           }
+           return null;
+   }
+
+   @Override
+   public Class<?> getColumnClass(int columnIndex){
+          switch (columnIndex){
+             case 0:
+               return String.class;
+             case 1:
+               return String.class;
+             case 2:
+               return String.class;
+             case 3:
+               return String.class;
+             case 4:
+               return String.class;
+//             case 5:
+//               return String.class;
 
               
                     
