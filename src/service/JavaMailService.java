@@ -98,7 +98,7 @@ public class JavaMailService {
                       //4) create new MimeBodyPart object and set DataHandler object to this object      
                       MimeBodyPart messageBodyPart2 = new MimeBodyPart();  
 
-                      String filename = "G:/Documents/Anurag/Project2/workspace_eclipse/generateInvoice_1003.pdf";//change accordingly  
+                        
                       DataSource source =(DataSource) mailData.get("attachment");//new FileDataSource(filename);  
                       messageBodyPart2.setDataHandler(new DataHandler(source));  
                       messageBodyPart2.setFileName("Invoice_"+mailData.get("project"));  
